@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -53,16 +52,30 @@ class CityFragment : Fragment() {
         when (appState) {
             is AppStatement.Error -> {
                 binding.loadingLayout.visibility = View.GONE
-                Snackbar.make(binding.mainView,"Can't load data",Snackbar.LENGTH_LONG).setAction("Try again"){
-                    viewModel.getWeather()
-                }.show()
+                Snackbar.make(binding.mainView, "Can't load data", Snackbar.LENGTH_LONG)
+                    .setAction("Try again") {
+                        viewModel.getWeather()
+                    }.show()
             }
-            is AppStatement.Loading ->{
+            is AppStatement.Loading -> {
                 binding.loadingLayout.visibility = View.VISIBLE
             }
             is AppStatement.Success -> {
                 binding.loadingLayout.visibility = View.GONE
-                Snackbar.make(binding.mainView,"${appState.temperature} (${appState.feelsLike} )",Snackbar.LENGTH_LONG).show()
+                //  Snackbar.make(binding.mainView,"${appState.temperature} (${appState.feelsLike} )",Snackbar.LENGTH_LONG).show()
+
+                binding.cityName.text = appState.weatherData.city.name
+                binding.cityCoordinates.text =
+                    "${appState.weatherData.city.lat}, ${appState.weatherData.city.lon}"
+                binding.temperatureValue.text = "${appState.weatherData.temperature}"
+                binding.feelsLikeValue.text = "${appState.weatherData.feelsLike}"
+
+                Snackbar.make(
+                    binding.mainView,
+                    "Success",
+                    Snackbar.LENGTH_LONG
+                ).show()
+
             }
         }
 

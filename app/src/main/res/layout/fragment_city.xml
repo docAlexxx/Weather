@@ -32,7 +32,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/cityName"
             android:textSize="@dimen/coordinates_text_size"
-            tools:text="coordinates:" />
+            tools:text="@string/coordinates_label_text" />
 
         <TextView
             android:id="@+id/cityCoordinates"

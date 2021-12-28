@@ -1,6 +1,6 @@
 package com.example.weather.model
 
-class RepoImpl :Repo {
+class RepoImpl : Repo {
     override fun getWeatherFromServer(): WeatherData {
         return WeatherData()
     }
