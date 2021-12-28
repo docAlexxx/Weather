@@ -15,10 +15,13 @@ class MainViewModel(private val liveData: MutableLiveData<AppStatement> = Mutabl
     fun getWeather() {
         Thread {
             liveData.postValue(AppStatement.Loading(0))
-            sleep(3000)
-            liveData.postValue(AppStatement.Loading(100))
-            sleep(3000)
-            liveData.postValue(AppStatement.Success(-15, -20))
+            sleep(2000)
+            val randomResult = (1..100).random()
+            if(randomResult>30){
+                liveData.postValue(AppStatement.Error(IllegalStateException("")))
+            }else{
+                liveData.postValue(AppStatement.Success(-20,-25))
+            }
         }.start()
     }
 }

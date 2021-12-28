@@ -11,6 +11,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weather.databinding.FragmentCityBinding
 import com.example.weather.viewmodel.AppStatement
 import com.example.weather.viewmodel.MainViewModel
+import com.google.android.material.snackbar.Snackbar
 
 
 class CityFragment : Fragment() {
@@ -50,22 +51,18 @@ class CityFragment : Fragment() {
 
     fun checkData(appState: AppStatement) {
         when (appState) {
-            is AppStatement.Error -> Toast.makeText(
-                requireContext(),
-                appState.error.message,
-                Toast.LENGTH_SHORT
-            ).show()
-            is AppStatement.Loading -> Toast.makeText(
-                requireContext(),
-                "${appState.progress}",
-                Toast.LENGTH_SHORT
-            ).show()
+            is AppStatement.Error -> {
+                binding.loadingLayout.visibility = View.GONE
+                Snackbar.make(binding.mainView,"Can't load data",Snackbar.LENGTH_LONG).setAction("Try again"){
+                    viewModel.getWeather()
+                }.show()
+            }
+            is AppStatement.Loading ->{
+                binding.loadingLayout.visibility = View.VISIBLE
+            }
             is AppStatement.Success -> {
-                Toast.makeText(
-                    requireContext(),
-                    "${appState.temperature} (${appState.feelsLike})",
-                    Toast.LENGTH_SHORT
-                ).show()
+                binding.loadingLayout.visibility = View.GONE
+                Snackbar.make(binding.mainView,"${appState.temperature} (${appState.feelsLike} )",Snackbar.LENGTH_LONG).show()
             }
         }
 
