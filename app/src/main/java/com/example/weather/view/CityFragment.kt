@@ -5,13 +5,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.weather.databinding.FragmentCityBinding
 import com.example.weather.model.WeatherData
-import com.example.weather.viewmodel.AppStatement
-import com.example.weather.viewmodel.MainViewModel
-import com.google.android.material.snackbar.Snackbar
 
 const val BUNDLE_KEY = "key"
 
@@ -37,8 +32,8 @@ class CityFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(bundle:Bundle):CityFragment {
-            val fragment  = CityFragment()
+        fun newInstance(bundle: Bundle): CityFragment {
+            val fragment = CityFragment()
             fragment.arguments = bundle
             return fragment
         }
@@ -47,7 +42,7 @@ class CityFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val weather = arguments?.getParcelable<WeatherData>(BUNDLE_KEY)
-        if(weather!=null){
+        if (weather != null) {
             setWeatherData(weather)
         }
     }

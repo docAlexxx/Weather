@@ -5,11 +5,11 @@
     android:id="@+id/city_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="5dp"
-    app:cardCornerRadius="5dp"
-    app:cardElevation="2dp"
+    android:layout_margin="@dimen/item_margin"
+    app:cardCornerRadius="@dimen/item_radius"
+    app:cardElevation="@dimen/item_elevation"
     app:strokeColor="@color/teal_200"
-    app:strokeWidth="2dp">
+    app:strokeWidth="@dimen/item_stroke_width">
 
     <TextView
         android:id="@+id/recyclerItemTextView"
@@ -18,7 +18,7 @@
         android:text="Name"
         android:textColor="#009688"
         android:textAlignment="center"
-        android:textSize="30sp"
+        android:textSize="@dimen/item_text_size"
         tools:text="Samara"/>
 
 </com.google.android.material.card.MaterialCardView>

@@ -14,7 +14,7 @@ import com.example.weather.viewmodel.AppStatement
 import com.example.weather.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class ListFragment : Fragment(),OnItemClick{
+class ListFragment : Fragment(), OnItemClick {
 
     private var _binding: FragmentListBinding? = null
     private val binding: FragmentListBinding
@@ -34,7 +34,8 @@ class ListFragment : Fragment(),OnItemClick{
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer<AppStatement> { checkData(it) })
+        viewModel.getLiveData()
+            .observe(viewLifecycleOwner, Observer<AppStatement> { checkData(it) })
         binding.listFragmentRecyclerView.adapter = adapter
         binding.listFragmentFAB.setOnClickListener {
             changeRegion()
@@ -44,13 +45,13 @@ class ListFragment : Fragment(),OnItemClick{
 
     private fun changeRegion() {
         isRussian = !isRussian
-            if (isRussian) {
-                viewModel.getWeatherFromLocalSourceRus()
-                binding.listFragmentFAB.setImageResource(R.drawable.ic_russia)
-            } else {
-                viewModel.getWeatherFromLocalSourceWorld()
-                binding.listFragmentFAB.setImageResource(R.drawable.ic_earth)
-            }
+        if (isRussian) {
+            viewModel.getWeatherFromLocalSourceRus()
+            binding.listFragmentFAB.setImageResource(R.drawable.ic_russia)
+        } else {
+            viewModel.getWeatherFromLocalSourceWorld()
+            binding.listFragmentFAB.setImageResource(R.drawable.ic_earth)
+        }
 
     }
 
@@ -80,10 +81,10 @@ class ListFragment : Fragment(),OnItemClick{
     }
 
     override fun onItemClick(weather: WeatherData) {
-        val bundle=Bundle()
-        bundle.putParcelable(BUNDLE_KEY,weather)
+        val bundle = Bundle()
+        bundle.putParcelable(BUNDLE_KEY, weather)
         requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.fragment_container,CityFragment.newInstance(bundle))
+            .add(R.id.fragment_container, CityFragment.newInstance(bundle))
             .addToBackStack("").commit()
     }
 

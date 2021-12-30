@@ -1,5 +1,6 @@
 package com.example.weather.view
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,18 +9,23 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.R
 import com.example.weather.model.WeatherData
 
-class ListFragmentAdapter (val listener:OnItemClick): RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
+class ListFragmentAdapter(val listener: OnItemClick) :
+    RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
 
     private var weatherData: List<WeatherData> = listOf()
 
+    @SuppressLint("NotifyDataSetChanged")
     fun setWeather(data: List<WeatherData>) {
         this.weatherData = data
         notifyDataSetChanged()
     }
 
-    override fun onCreateViewHolder(        parent: ViewGroup,        viewType: Int
+    override fun onCreateViewHolder(
+        parent: ViewGroup, viewType: Int
     ): ListFragmentAdapter.MainViewHolder {
-        return MainViewHolder(LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent,false))
+        return MainViewHolder(
+            LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
+        )
     }
 
     override fun onBindViewHolder(holder: ListFragmentAdapter.MainViewHolder, position: Int) {
@@ -32,8 +38,8 @@ class ListFragmentAdapter (val listener:OnItemClick): RecyclerView.Adapter<ListF
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(weather: WeatherData) {
-            itemView.findViewById<TextView>(R.id.recyclerItemTextView).text=weather.city.name
-            itemView.setOnClickListener{
+            itemView.findViewById<TextView>(R.id.recyclerItemTextView).text = weather.city.name
+            itemView.setOnClickListener {
                 listener.onItemClick(weather)
             }
         }

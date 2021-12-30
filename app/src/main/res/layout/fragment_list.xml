@@ -17,11 +17,11 @@
         android:id="@+id/listFragmentFAB"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="15dp"
+        android:layout_margin="@dimen/marginFAB"
         android:src="@drawable/ic_russia"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:maxImageSize="56dp"
+        app:maxImageSize="@dimen/max_size_FAB"
         app:tint="@null" />
 
     <FrameLayout
