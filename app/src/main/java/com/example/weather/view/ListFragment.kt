@@ -14,7 +14,7 @@ import com.example.weather.viewmodel.AppStatement
 import com.example.weather.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class ListFragment : Fragment(){
+class ListFragment : Fragment(),OnItemClick{
 
     private var _binding: FragmentListBinding? = null
     private val binding: FragmentListBinding
@@ -88,5 +88,13 @@ class ListFragment : Fragment(){
         }
 
 
+    }
+
+    override fun onItemClick(weather: WeatherData) {
+        val bundle=Bundle()
+        bundle.putParcelable(BUNDLE_KEY,weather)
+        requireActivity().supportFragmentManager.beginTransaction()
+            .add(R.id.fragment_container,CityFragment.newInstance(bundle))
+            .addToBackStack("").commit()
     }
 }
