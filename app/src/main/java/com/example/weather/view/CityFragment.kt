@@ -45,7 +45,7 @@ class CityFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData()
             .observe(viewLifecycleOwner, Observer<AppStatement> { checkData(it) })
-        viewModel.getWeather()
+      //  viewModel.getWeather()
     }
 
     fun checkData(appState: AppStatement) {
@@ -54,7 +54,7 @@ class CityFragment : Fragment() {
                 binding.loadingLayout.visibility = View.GONE
                 Snackbar.make(binding.mainView, "Can't load data", Snackbar.LENGTH_LONG)
                     .setAction("Try again") {
-                        viewModel.getWeather()
+                      //  viewModel.getWeather()
                     }.show()
             }
             is AppStatement.Loading -> {
@@ -64,11 +64,11 @@ class CityFragment : Fragment() {
                 binding.loadingLayout.visibility = View.GONE
                 //  Snackbar.make(binding.mainView,"${appState.temperature} (${appState.feelsLike} )",Snackbar.LENGTH_LONG).show()
 
-                binding.cityName.text = appState.weatherData.city.name
+             /*   binding.cityName.text = appState.weatherData.city.name
                 binding.cityCoordinates.text =
                     "${appState.weatherData.city.lat}, ${appState.weatherData.city.lon}"
                 binding.temperatureValue.text = "${appState.weatherData.temperature}"
-                binding.feelsLikeValue.text = "${appState.weatherData.feelsLike}"
+                binding.feelsLikeValue.text = "${appState.weatherData.feelsLike}"*/
 
                 Snackbar.make(
                     binding.mainView,

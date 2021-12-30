@@ -5,111 +5,88 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.example.weather.R
+import com.example.weather.databinding.FragmentListBinding
+import com.example.weather.model.WeatherData
+import com.example.weather.viewmodel.AppStatement
+import com.example.weather.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class MainFragment : Fragment(), OnMyItemClickListener {
+class ListFragment : Fragment(){
 
-    private var _binding: FragmentMainBinding? = null
-    private val binding: FragmentMainBinding
+    private var _binding: FragmentListBinding? = null
+    private val binding: FragmentListBinding
         get() {
             return _binding!!
         }
 
-    private val adapter: MainFragmentAdapter by lazy {
-        MainFragmentAdapter(this)
-    }
+    private val adapter = ListFragmentAdapter()
     private var isRussian = true
 
-    private val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+    private lateinit var viewModel: MainViewModel
+
+    companion object {
+        fun newInstance() = ListFragment()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        // обращаем внимание
         initView()
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer<AppState> { renderData(it) })
-        viewModel.getWeatherFromLocalSourceRus()
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        viewModel.getLiveData().observe(viewLifecycleOwner, Observer<AppStatement> { checkData(it) })
+        initView()
     }
 
     private fun initView() {
         with(binding) {
-            mainFragmentRecyclerView.adapter = adapter
-            mainFragmentFAB.setOnClickListener {
-                sentRequest()
+            listFragmentRecyclerView.adapter = adapter
+            listFragmentFAB.setOnClickListener {
+                changeRegion()
             }
         }
     }
 
-    private fun sentRequest() {
+    private fun changeRegion() {
         isRussian = !isRussian
         with(binding) {
             if (isRussian) {
                 viewModel.getWeatherFromLocalSourceRus()
-                mainFragmentFAB.setImageResource(R.drawable.ic_russia)
+                listFragmentFAB.setImageResource(R.drawable.ic_russia)
             } else {
                 viewModel.getWeatherFromLocalSourceWorld()
-                mainFragmentFAB.setImageResource(R.drawable.ic_earth)
+                listFragmentFAB.setImageResource(R.drawable.ic_earth)
             }
         }
 
     }
 
-    private fun renderData(appState: AppState) {
-        with(binding) {
-            when (appState) {
-                is AppState.Error -> {
-                    mainFragmentLoadingLayout.visibility = View.GONE
-                    Snackbar.make(root, "Error", Snackbar.LENGTH_LONG)
-                        .setAction("Попробовать еще раз") {
-                            sentRequest()
-                        }.show()
-                }
-                is AppState.Loading -> {
-                    mainFragmentLoadingLayout.visibility = View.VISIBLE
-                }
-                is AppState.Success -> {
-                    mainFragmentLoadingLayout.visibility = View.GONE
-                    adapter.setWeather(appState.weatherData)
-                    binding.root.showSnackBarWithoutAction("Success showSnackBarWithoutAction",Snackbar.LENGTH_LONG)
-                }
+    fun checkData(appState: AppStatement) {
+        when (appState) {
+            is AppStatement.Error -> {
+                binding.listFragmentLoadingLayout.visibility = View.GONE
+                Snackbar.make(binding.root, "Can't load data", Snackbar.LENGTH_LONG)
+                    .setAction("Try again") {
+                        changeRegion()
+                    }.show()
+            }
+            is AppStatement.Loading -> {
+                binding.listFragmentLoadingLayout.visibility = View.VISIBLE
+            }
+            is AppStatement.Success -> {
+                binding.listFragmentLoadingLayout.visibility = View.GONE
+                adapter.setWeather(appState.weatherData)
+
+                Snackbar.make(
+                    binding.root,
+                    "Success",
+                    Snackbar.LENGTH_LONG
+                ).show()
+
             }
         }
-    }
 
-    fun View.showSnackBarWithoutAction(text:String, length:Int){
-        Snackbar.make(this,text,length).show()
-    }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
-    companion object {
-        fun newInstance() = MainFragment()
-    }
-
-    override fun onItemClick(weather: Weather) {
-
-        activity?.run {
-            supportFragmentManager.beginTransaction()
-                .add(R.id.container,
-                    DetailsFragment.newInstance(
-                        Bundle().apply {
-                            putParcelable(BUNDLE_KEY, weather)
-                        }
-                    ))
-                .addToBackStack("").commit()
-        }
     }
 }
