@@ -24,7 +24,7 @@ class MainViewModel(
     fun getWeather(isRussian: Boolean) {
         liveData.postValue(AppStatement.Loading(0))
         Thread {
-            sleep(2000)
+            sleep(1000)
             val randomResult = (1..100).random()
             if (randomResult > 90) {
                 liveData.postValue(AppStatement.Error(IllegalStateException("")))

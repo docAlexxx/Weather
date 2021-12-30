@@ -22,7 +22,7 @@ class ListFragment : Fragment(),OnItemClick{
             return _binding!!
         }
 
-    private val adapter = ListFragmentAdapter()
+    private val adapter = ListFragmentAdapter(this)
     private var isRussian = true
 
     private lateinit var viewModel: MainViewModel
@@ -33,32 +33,24 @@ class ListFragment : Fragment(),OnItemClick{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        initView()
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
         viewModel.getLiveData().observe(viewLifecycleOwner, Observer<AppStatement> { checkData(it) })
-        initView()
-    }
-
-    private fun initView() {
-        with(binding) {
-            listFragmentRecyclerView.adapter = adapter
-            listFragmentFAB.setOnClickListener {
-                changeRegion()
-            }
+        binding.listFragmentRecyclerView.adapter = adapter
+        binding.listFragmentFAB.setOnClickListener {
+            changeRegion()
         }
+        viewModel.getWeatherFromLocalSourceRus()
     }
 
     private fun changeRegion() {
         isRussian = !isRussian
-        with(binding) {
             if (isRussian) {
                 viewModel.getWeatherFromLocalSourceRus()
-                listFragmentFAB.setImageResource(R.drawable.ic_russia)
+                binding.listFragmentFAB.setImageResource(R.drawable.ic_russia)
             } else {
                 viewModel.getWeatherFromLocalSourceWorld()
-                listFragmentFAB.setImageResource(R.drawable.ic_earth)
+                binding.listFragmentFAB.setImageResource(R.drawable.ic_earth)
             }
-        }
 
     }
 
@@ -83,18 +75,29 @@ class ListFragment : Fragment(),OnItemClick{
                     "Success",
                     Snackbar.LENGTH_LONG
                 ).show()
-
             }
         }
-
-
     }
 
     override fun onItemClick(weather: WeatherData) {
         val bundle=Bundle()
         bundle.putParcelable(BUNDLE_KEY,weather)
         requireActivity().supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container,CityFragment.newInstance(bundle))
+            .replace(R.id.fragment_container,CityFragment.newInstance(bundle))
             .addToBackStack("").commit()
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = FragmentListBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
 }

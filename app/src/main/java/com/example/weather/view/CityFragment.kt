@@ -44,8 +44,6 @@ class CityFragment : Fragment() {
         }
     }
 
-    private lateinit var viewModel: MainViewModel
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val weather = arguments?.getParcelable<WeatherData>(BUNDLE_KEY)

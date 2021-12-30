@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.weather.R
 import com.example.weather.model.WeatherData
 
-class ListFragmentAdapter : RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
+class ListFragmentAdapter (val listener:OnItemClick): RecyclerView.Adapter<ListFragmentAdapter.MainViewHolder>() {
 
     private var weatherData: List<WeatherData> = listOf()
 
@@ -34,7 +34,7 @@ class ListFragmentAdapter : RecyclerView.Adapter<ListFragmentAdapter.MainViewHol
         fun bind(weather: WeatherData) {
             itemView.findViewById<TextView>(R.id.recyclerItemTextView).text=weather.city.name
             itemView.setOnClickListener{
-
+                listener.onItemClick(weather)
             }
         }
     }
