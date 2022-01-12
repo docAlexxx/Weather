@@ -23,9 +23,7 @@ class ListFragmentAdapter(val listener: OnItemClick) :
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
     ): MainViewHolder {
-      //  return MainViewHolder(
-      //      LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
-      //  )
+
         val binding: RecyclerItemBinding =
             RecyclerItemBinding.inflate(
                 LayoutInflater.from(parent.context),
@@ -46,14 +44,13 @@ class ListFragmentAdapter(val listener: OnItemClick) :
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(weather: WeatherData) {
-         //   itemView.findViewById<TextView>(R.id.recyclerItemTextView).text = weather.city.name
-         //   itemView.setOnClickListener {
-                val binding = RecyclerItemBinding.bind(itemView)
-                binding.recyclerItemTextView.text = weather.city.name
-                binding.root.setOnClickListener {
-                listener.onItemClick(weather)
-            }
+            RecyclerItemBinding.bind(itemView).run {
+                recyclerItemTextView.text = weather.city.name
+                root.setOnClickListener {
+                    listener.onItemClick(weather)
+                }
 
+            }
         }
     }
 }
