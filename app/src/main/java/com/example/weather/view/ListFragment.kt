@@ -38,7 +38,7 @@ class ListFragment : Fragment(), OnItemClick {
         super.onViewCreated(view, savedInstanceState)
         initView()
         viewModel.getLiveData()
-            .observe(viewLifecycleOwner, Observer<AppStatement> { checkData(it) })
+            .observe(viewLifecycleOwner, Observer<AppStatement> { showData(it) })
         viewModel.getWeatherFromLocalSourceRus()
     }
 
@@ -66,14 +66,14 @@ class ListFragment : Fragment(), OnItemClick {
         }
     }
 
-    private fun checkData(appState: AppStatement) {
+    private fun showData(appState: AppStatement) {
         binding.apply {
             with(listFragmentLoadingLayout) {
                 when (appState) {
                     is AppStatement.Error -> {
                         visibility = View.GONE
-                        binding.root.showSnackBarWithAction("Can't load data",
-                            "Try again",
+                        binding.root.showSnackBarWithAction(getString(R.string.error_text),
+                            getString(R.string.retry_text),
                             Snackbar.LENGTH_LONG,
                             { changeRegion() })
                     }
@@ -83,7 +83,7 @@ class ListFragment : Fragment(), OnItemClick {
                     is AppStatement.Success -> {
                         visibility = View.GONE
                         adapter.setWeather(appState.weatherData)
-                        binding.root.showSnackBarWithoutAction("Success", Snackbar.LENGTH_LONG)
+                        binding.root.showSnackBarWithoutAction(getString(R.string.success_text), Snackbar.LENGTH_LONG)
                     }
                 }
             }
