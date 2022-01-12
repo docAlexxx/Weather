@@ -11,7 +11,7 @@ import com.example.weather.model.WeatherData
 const val BUNDLE_KEY = "key"
 
 class CityFragment : Fragment() {
-    var _binding: FragmentCityBinding? = null
+    private var _binding: FragmentCityBinding? = null
 
     private val binding: FragmentCityBinding
         get() {
@@ -32,27 +32,28 @@ class CityFragment : Fragment() {
     }
 
     companion object {
-        fun newInstance(bundle: Bundle): CityFragment {
-            val fragment = CityFragment()
-            fragment.arguments = bundle
-            return fragment
-        }
+        fun newInstance(bundle: Bundle) = CityFragment().also { it.arguments = bundle }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val weather = arguments?.getParcelable<WeatherData>(BUNDLE_KEY)
-        if (weather != null) {
-            setWeatherData(weather)
+        arguments?.let {
+            it.getParcelable<WeatherData>(BUNDLE_KEY)?.run {
+                setWeatherData(this)
+            }
         }
     }
 
     private fun setWeatherData(weather: WeatherData) {
-        binding.cityName.text = weather.city.name
-        binding.cityCoordinates.text =
-            "${weather.city.lat}, ${weather.city.lon}"
-        binding.temperatureValue.text = "${weather.temperature}"
-        binding.feelsLikeValue.text = "${weather.feelsLike}"
+        with(binding) {
+            weather.run {
+                cityName.text = city.name
+                cityCoordinates.text =
+                    "${city.lat}, ${city.lon}"
+                temperatureValue.text = "${temperature}"
+                feelsLikeValue.text = "${feelsLike}"
+            }
+        }
     }
 
 }
