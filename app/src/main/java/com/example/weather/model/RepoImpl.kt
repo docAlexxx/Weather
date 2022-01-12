@@ -1,17 +1,10 @@
 package com.example.weather.model
 
 class RepoImpl : Repo {
-    override fun getWeatherFromServer(): WeatherData {
-        return WeatherData()
-    }
+    override fun getWeatherFromServer() = WeatherData()
 
-    override fun getWeatherFromLocalStorageRus(): List<WeatherData> {
-        return getRussianCities()
-    }
+    override fun getWeatherFromLocalStorageRus() = getRussianCities()
 
-    override fun getWeatherFromLocalStorageWorld(): List<WeatherData> {
-        return getWorldCities()
-    }
-
+    override fun getWeatherFromLocalStorageWorld() = getWorldCities()
 
 }
