@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.example.weather.R
+import com.example.weather.databinding.RecyclerItemBinding
 import com.example.weather.model.WeatherData
 
 class ListFragmentAdapter(val listener: OnItemClick) :
@@ -22,13 +22,21 @@ class ListFragmentAdapter(val listener: OnItemClick) :
 
     override fun onCreateViewHolder(
         parent: ViewGroup, viewType: Int
-    ): ListFragmentAdapter.MainViewHolder {
-        return MainViewHolder(
-            LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
-        )
+    ): MainViewHolder {
+      //  return MainViewHolder(
+      //      LayoutInflater.from(parent.context).inflate(R.layout.recycler_item, parent, false)
+      //  )
+        val binding: RecyclerItemBinding =
+            RecyclerItemBinding.inflate(
+                LayoutInflater.from(parent.context),
+                parent,
+                false
+            )
+        return MainViewHolder(binding.root)
+
     }
 
-    override fun onBindViewHolder(holder: ListFragmentAdapter.MainViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: MainViewHolder, position: Int) {
         holder.bind(this.weatherData[position])
     }
 
@@ -38,10 +46,14 @@ class ListFragmentAdapter(val listener: OnItemClick) :
 
     inner class MainViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         fun bind(weather: WeatherData) {
-            itemView.findViewById<TextView>(R.id.recyclerItemTextView).text = weather.city.name
-            itemView.setOnClickListener {
+         //   itemView.findViewById<TextView>(R.id.recyclerItemTextView).text = weather.city.name
+         //   itemView.setOnClickListener {
+                val binding = RecyclerItemBinding.bind(itemView)
+                binding.recyclerItemTextView.text = weather.city.name
+                binding.root.setOnClickListener {
                 listener.onItemClick(weather)
             }
+
         }
     }
 }
