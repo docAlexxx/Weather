@@ -23,9 +23,12 @@ class ListFragment : Fragment(), OnItemClick {
         }
 
     private val adapter = ListFragmentAdapter(this)
+
     private var isRussian = true
 
-    private lateinit var viewModel: MainViewModel
+    private val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
 
     companion object {
         fun newInstance() = ListFragment()
@@ -33,59 +36,71 @@ class ListFragment : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+        initView()
         viewModel.getLiveData()
             .observe(viewLifecycleOwner, Observer<AppStatement> { checkData(it) })
-        binding.listFragmentRecyclerView.adapter = adapter
-        binding.listFragmentFAB.setOnClickListener {
-            changeRegion()
-        }
         viewModel.getWeatherFromLocalSourceRus()
+    }
+
+    private fun initView() {
+        with(binding) {
+            listFragmentRecyclerView.adapter = adapter
+            listFragmentFAB.setOnClickListener {
+                changeRegion()
+            }
+        }
     }
 
     private fun changeRegion() {
         isRussian = !isRussian
-        if (isRussian) {
-            viewModel.getWeatherFromLocalSourceRus()
-            binding.listFragmentFAB.setImageResource(R.drawable.ic_russia)
-        } else {
-            viewModel.getWeatherFromLocalSourceWorld()
-            binding.listFragmentFAB.setImageResource(R.drawable.ic_earth)
+        with(binding.listFragmentFAB){
+            viewModel.apply{
+                if (isRussian) {
+                    getWeatherFromLocalSourceRus()
+                    setImageResource(R.drawable.ic_russia)
+                } else {
+                    getWeatherFromLocalSourceWorld()
+                    setImageResource(R.drawable.ic_earth)
+                }
+            }
         }
-
     }
 
     fun checkData(appState: AppStatement) {
-        when (appState) {
-            is AppStatement.Error -> {
-                binding.listFragmentLoadingLayout.visibility = View.GONE
-                Snackbar.make(binding.root, "Can't load data", Snackbar.LENGTH_LONG)
-                    .setAction("Try again") {
-                        changeRegion()
-                    }.show()
-            }
-            is AppStatement.Loading -> {
-                binding.listFragmentLoadingLayout.visibility = View.VISIBLE
-            }
-            is AppStatement.Success -> {
-                binding.listFragmentLoadingLayout.visibility = View.GONE
-                adapter.setWeather(appState.weatherData)
-
-                Snackbar.make(
-                    binding.root,
-                    "Success",
-                    Snackbar.LENGTH_LONG
-                ).show()
-            }
-        }
+       binding.apply {
+           with(listFragmentLoadingLayout) {
+           when (appState) {
+               is AppStatement.Error -> {
+                   visibility = View.GONE
+                   Snackbar.make(root, "Can't load data", Snackbar.LENGTH_LONG)
+                       .setAction("Try again") {
+                           changeRegion()
+                       }.show()
+               }
+               is AppStatement.Loading -> {
+                   visibility = View.VISIBLE
+               }
+               is AppStatement.Success -> {
+                   visibility = View.GONE
+                   adapter.setWeather(appState.weatherData)
+                   Snackbar.make(root,"Success",Snackbar.LENGTH_LONG).show()
+               }
+           }
+       }
+       }
     }
 
     override fun onItemClick(weather: WeatherData) {
-        val bundle = Bundle()
-        bundle.putParcelable(BUNDLE_KEY, weather)
-        requireActivity().supportFragmentManager.beginTransaction()
-            .add(R.id.fragment_container, CityFragment.newInstance(bundle))
-            .addToBackStack("").commit()
+        activity?.run {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, CityFragment.newInstance(
+                        Bundle().apply {
+                            putParcelable(BUNDLE_KEY, weather)
+                        }
+                    ))
+                .addToBackStack("").commit()
+        }
+
     }
 
     override fun onDestroy() {
@@ -96,7 +111,7 @@ class ListFragment : Fragment(), OnItemClick {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentListBinding.inflate(inflater, container, false)
         return binding.root
     }
