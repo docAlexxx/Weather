@@ -53,8 +53,8 @@ class ListFragment : Fragment(), OnItemClick {
 
     private fun changeRegion() {
         isRussian = !isRussian
-        with(binding.listFragmentFAB){
-            viewModel.apply{
+        with(binding.listFragmentFAB) {
+            viewModel.apply {
                 if (isRussian) {
                     getWeatherFromLocalSourceRus()
                     setImageResource(R.drawable.ic_russia)
@@ -66,38 +66,51 @@ class ListFragment : Fragment(), OnItemClick {
         }
     }
 
-    fun checkData(appState: AppStatement) {
-       binding.apply {
-           with(listFragmentLoadingLayout) {
-           when (appState) {
-               is AppStatement.Error -> {
-                   visibility = View.GONE
-                   Snackbar.make(root, "Can't load data", Snackbar.LENGTH_LONG)
-                       .setAction("Try again") {
-                           changeRegion()
-                       }.show()
-               }
-               is AppStatement.Loading -> {
-                   visibility = View.VISIBLE
-               }
-               is AppStatement.Success -> {
-                   visibility = View.GONE
-                   adapter.setWeather(appState.weatherData)
-                   Snackbar.make(root,"Success",Snackbar.LENGTH_LONG).show()
-               }
-           }
-       }
-       }
+    private fun checkData(appState: AppStatement) {
+        binding.apply {
+            with(listFragmentLoadingLayout) {
+                when (appState) {
+                    is AppStatement.Error -> {
+                        visibility = View.GONE
+                        binding.root.showSnackBarWithAction("Can't load data",
+                            "Try again",
+                            Snackbar.LENGTH_LONG,
+                            { changeRegion() })
+                    }
+                    is AppStatement.Loading -> {
+                        visibility = View.VISIBLE
+                    }
+                    is AppStatement.Success -> {
+                        visibility = View.GONE
+                        adapter.setWeather(appState.weatherData)
+                        binding.root.showSnackBarWithoutAction("Success", Snackbar.LENGTH_LONG)
+                    }
+                }
+            }
+        }
+    }
+
+    private fun View.showSnackBarWithoutAction(text: String, long: Int) {
+        Snackbar.make(this, text, long).show()
+    }
+
+    private fun View.showSnackBarWithAction(
+        text: String,
+        actionText: String,
+        long: Int,
+        block: () -> Unit
+    ) {
+        Snackbar.make(this, text, long).setAction(actionText) { block() }.show()
     }
 
     override fun onItemClick(weather: WeatherData) {
         activity?.run {
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, CityFragment.newInstance(
-                        Bundle().apply {
-                            putParcelable(BUNDLE_KEY, weather)
-                        }
-                    ))
+                    Bundle().apply {
+                        putParcelable(BUNDLE_KEY, weather)
+                    }
+                ))
                 .addToBackStack("").commit()
         }
 

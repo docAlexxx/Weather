@@ -26,7 +26,7 @@ class CityFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCityBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -50,8 +50,8 @@ class CityFragment : Fragment() {
                 cityName.text = city.name
                 cityCoordinates.text =
                     "${city.lat}, ${city.lon}"
-                temperatureValue.text = "${temperature}"
-                feelsLikeValue.text = "${feelsLike}"
+                temperatureValue.text = "$temperature"
+                feelsLikeValue.text = "$feelsLike"
             }
         }
     }
