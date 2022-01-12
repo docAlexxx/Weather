@@ -1,4 +1,4 @@
-package com.example.weather.view
+package com.example.weather.view.list
 
 import android.annotation.SuppressLint
 import android.view.LayoutInflater

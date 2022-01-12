@@ -1,4 +1,4 @@
-package com.example.weather.view
+package com.example.weather.view.list
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -10,6 +10,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.databinding.FragmentListBinding
 import com.example.weather.model.WeatherData
+import com.example.weather.view.city.BUNDLE_KEY
+import com.example.weather.view.city.CityFragment
 import com.example.weather.viewmodel.AppStatement
 import com.example.weather.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
