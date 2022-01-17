@@ -8,6 +8,6 @@
     <string name="error_text">Can\'t load data:</string>
     <string name="retry_text">Try again:</string>
     <string name="success_text">Success:</string>
-
+    <string name="error_load_text">Error by loading data for </string>
 
 </resources>

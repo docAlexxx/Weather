@@ -15,11 +15,13 @@ class WeatherLoader(private val onWeatherLoaded: OnWeatherLoaded) {
 
     fun loadWeather(lat: Double, lon: Double) {
 
-        try {
-            Thread {
+
+        Thread {
 
                 val url = URL("https://api.weather.yandex.ru/v2/informers?lat=$lat&lon=$lon")
-                val httpsURLConnection = (url.openConnection() as HttpsURLConnection).apply {
+                val httpsURLConnection = (url.openConnection() as HttpsURLConnection)
+                try {
+                httpsURLConnection.apply {
                     requestMethod = "GET"
                     readTimeout = 2000
                     addRequestProperty(API_KEY, BuildConfig.WEATHER_API_KEY)
@@ -31,12 +33,13 @@ class WeatherLoader(private val onWeatherLoaded: OnWeatherLoaded) {
                 Handler(Looper.getMainLooper()).post {
                     onWeatherLoaded.onLoaded(weatherDTO)
                 }
-            }.start()
-        } catch (e: Throwable) {
-            onWeatherLoaded.onFailed()
-        } finally {
-            //    httpsURLConnection.disconnect()
-        }
+            } catch (e: Throwable) {
+                onWeatherLoaded.onFailed()
+            } finally {
+                    httpsURLConnection.disconnect()
+            }
+        }.start()
+
 
     }
 

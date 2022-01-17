@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import com.example.weather.R
 import com.example.weather.Utils.BUNDLE_KEY
 import com.example.weather.Utils.WeatherLoader
 import com.example.weather.databinding.FragmentCityBinding
@@ -70,7 +71,7 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
     }
 
     override fun onFailed() {
-        Snackbar.make(binding.root, "Error by loading data for ${localWeather.city.name}", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(binding.root, getString(R.string.error_load_text)+"${localWeather.city.name}", Snackbar.LENGTH_LONG).show()
     }
 
 
