@@ -1,6 +1,5 @@
 package com.example.weather.view.city
 
-import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +10,8 @@ import com.example.weather.Utils.WeatherLoader
 import com.example.weather.databinding.FragmentCityBinding
 import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
+import com.google.android.material.snackbar.Snackbar
+
 
 class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
     private var _binding: FragmentCityBinding? = null
@@ -69,7 +70,9 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
     }
 
     override fun onFailed() {
-        TODO("Not yet implemented")
+        Snackbar.make(binding.root, "Error by loading data for ${localWeather.city.name}", Snackbar.LENGTH_LONG).show()
     }
+
+
 
 }

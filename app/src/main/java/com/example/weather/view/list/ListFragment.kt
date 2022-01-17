@@ -8,9 +8,9 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
+import com.example.weather.Utils.BUNDLE_KEY
 import com.example.weather.databinding.FragmentListBinding
 import com.example.weather.model.WeatherData
-import com.example.weather.view.city.BUNDLE_KEY
 import com.example.weather.view.city.CityFragment
 import com.example.weather.viewmodel.AppStatement
 import com.example.weather.viewmodel.MainViewModel
