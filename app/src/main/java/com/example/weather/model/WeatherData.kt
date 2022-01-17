@@ -11,9 +11,9 @@ data class WeatherData(
 ) : Parcelable
 
 @Parcelize
-data class City(val name: String, val lon: Double, val lat: Double) : Parcelable
+data class City(val name: String, val lat: Double, val lon: Double) : Parcelable
 
-fun getDefaultCity() = City("Samara", 53.2001, 50.15)
+fun getDefaultCity() = City("Samara", 53.12, 50.06)
 
 fun getWorldCities(): List<WeatherData> {
     return listOf(
@@ -32,7 +32,7 @@ fun getWorldCities(): List<WeatherData> {
 
 fun getRussianCities(): List<WeatherData> {
     return listOf(
-        WeatherData(City("Самара", 53.2001, 50.15), 10, 15),
+        WeatherData(City("Самара", 53.12, 50.06), 10, 15),
         WeatherData(City("Москва", 55.755826, 37.617299900000035), 1, 2),
         WeatherData(City("Санкт-Петербург", 59.9342802, 30.335098600000038), 3, 3),
         WeatherData(City("Новосибирск", 55.00835259999999, 82.93573270000002), 5, 6),
