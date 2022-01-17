@@ -1,22 +1,29 @@
 package com.example.weather.view.city
 
+import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.example.weather.Utils.WeatherLoader
 import com.example.weather.databinding.FragmentCityBinding
+import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
 
 const val BUNDLE_KEY = "key"
 
-class CityFragment : Fragment() {
+class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
     private var _binding: FragmentCityBinding? = null
 
     private val binding: FragmentCityBinding
         get() {
             return _binding!!
         }
+
+    private val weatherLoader =WeatherLoader(this)
+    lateinit var localWeather:WeatherData
 
     override fun onDestroy() {
         super.onDestroy()
@@ -35,25 +42,37 @@ class CityFragment : Fragment() {
         fun newInstance(bundle: Bundle) = CityFragment().also { it.arguments = bundle }
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-            it.getParcelable<WeatherData>(BUNDLE_KEY)?.run {
-                setWeatherData(this)
+                it.getParcelable<WeatherData>(BUNDLE_KEY)?.let {
+                    localWeather = it
+                    weatherLoader.loadWeather(it.city.lat,it.city.lon)
             }
         }
     }
 
-    private fun setWeatherData(weather: WeatherData) {
+    private fun setWeatherData(weatherDTO: WeatherDTO) {
         with(binding) {
-            weather.run {
+            localWeather.run {
                 cityName.text = city.name
                 cityCoordinates.text =
-                    "${city.lat}, ${city.lon}"
-                temperatureValue.text = "$temperature"
-                feelsLikeValue.text = "$feelsLike"
+                    "${weatherDTO.info.lat}, ${weatherDTO.info.lon}"
+                temperatureValue.text = "${weatherDTO.fact.temp}"
+                feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
             }
         }
+    }
+
+    override fun onLoaded(weatherDTO: WeatherDTO?) {
+        weatherDTO?.let {
+            setWeatherData(weatherDTO)
+        }
+    }
+
+    override fun onFailed() {
+        TODO("Not yet implemented")
     }
 
 }

@@ -38,9 +38,10 @@ class WeatherLoader (private val onWeatherLoaded: OnWeatherLoaded) {
         return bufferedReader.lines().collect(Collectors.joining("\n"))
     }
 
+    interface OnWeatherLoaded {
+        fun onLoaded(weatherDTO: WeatherDTO?)
+        fun onFailed()
+    }
+
 }
 
-interface OnWeatherLoaded {
-    fun onLoaded(weatherDTO: WeatherDTO?)
-    fun onFailed()
-}
