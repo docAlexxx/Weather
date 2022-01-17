@@ -85,7 +85,10 @@ class ListFragment : Fragment(), OnItemClick {
                     is AppStatement.Success -> {
                         visibility = View.GONE
                         adapter.setWeather(appState.weatherData)
-                        binding.root.showSnackBarWithoutAction(getString(R.string.success_text), Snackbar.LENGTH_LONG)
+                        binding.root.showSnackBarWithoutAction(
+                            getString(R.string.success_text),
+                            Snackbar.LENGTH_LONG
+                        )
                     }
                 }
             }

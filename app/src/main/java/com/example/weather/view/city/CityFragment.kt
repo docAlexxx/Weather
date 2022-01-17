@@ -22,8 +22,8 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
             return _binding!!
         }
 
-    private val weatherLoader =WeatherLoader(this)
-    lateinit var localWeather:WeatherData
+    private val weatherLoader = WeatherLoader(this)
+    lateinit var localWeather: WeatherData
 
     override fun onDestroy() {
         super.onDestroy()
@@ -45,9 +45,9 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
-                it.getParcelable<WeatherData>(BUNDLE_KEY)?.let {
-                    localWeather = it
-                    weatherLoader.loadWeather(it.city.lat,it.city.lon)
+            it.getParcelable<WeatherData>(BUNDLE_KEY)?.let {
+                localWeather = it
+                weatherLoader.loadWeather(it.city.lat, it.city.lon)
             }
         }
     }
@@ -71,9 +71,12 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
     }
 
     override fun onFailed() {
-        Snackbar.make(binding.root, getString(R.string.error_load_text)+"${localWeather.city.name}", Snackbar.LENGTH_LONG).show()
+        Snackbar.make(
+            binding.root,
+            getString(R.string.error_load_text) + "${localWeather.city.name}",
+            Snackbar.LENGTH_LONG
+        ).show()
     }
-
 
 
 }
