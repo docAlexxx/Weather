@@ -1,9 +1,8 @@
 package com.example.weather.Utils
 
-import android.os.Build
 import android.os.Handler
 import android.os.Looper
-import androidx.annotation.RequiresApi
+import com.example.weather.BuildConfig
 import com.example.weather.model.WeatherDTO
 import com.google.gson.Gson
 import java.io.BufferedReader
@@ -14,7 +13,6 @@ import javax.net.ssl.HttpsURLConnection
 
 class WeatherLoader (private val onWeatherLoaded: OnWeatherLoaded) {
 
-    @RequiresApi(Build.VERSION_CODES.N)
     fun loadWeather(lat: Double, lon: Double) {
 
         Thread {
@@ -22,7 +20,7 @@ class WeatherLoader (private val onWeatherLoaded: OnWeatherLoaded) {
             val httpsURLConnection = (url.openConnection() as HttpsURLConnection).apply {
                 requestMethod = "GET"
                 readTimeout = 2000
-                addRequestProperty("X-Yandex-API-Key", "c03274e4-2ca8-4633-b2dc-98865a65c693")
+                addRequestProperty(API_KEY, BuildConfig.WEATHER_API_KEY)
             }
             val bufferedReader = BufferedReader(InputStreamReader(httpsURLConnection.inputStream))
             val weatherDTO: WeatherDTO? =
@@ -33,7 +31,6 @@ class WeatherLoader (private val onWeatherLoaded: OnWeatherLoaded) {
         }.start()
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     private fun convertBufferToResult(bufferedReader: BufferedReader): String {
         return bufferedReader.lines().collect(Collectors.joining("\n"))
     }

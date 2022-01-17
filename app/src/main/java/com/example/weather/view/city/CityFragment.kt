@@ -5,14 +5,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
+import com.example.weather.Utils.BUNDLE_KEY
 import com.example.weather.Utils.WeatherLoader
 import com.example.weather.databinding.FragmentCityBinding
 import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
-
-const val BUNDLE_KEY = "key"
 
 class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
     private var _binding: FragmentCityBinding? = null
@@ -42,7 +40,6 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
         fun newInstance(bundle: Bundle) = CityFragment().also { it.arguments = bundle }
     }
 
-    @RequiresApi(Build.VERSION_CODES.N)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         arguments?.let {
