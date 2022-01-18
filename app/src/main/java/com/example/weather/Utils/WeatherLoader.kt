@@ -31,7 +31,7 @@ class WeatherLoader(private val onWeatherLoaded: OnWeatherLoaded) {
                 Handler(Looper.getMainLooper()).post {
                     onWeatherLoaded.onLoaded(weatherDTO)
                 }
-            } catch (e: Throwable) {
+            } catch (e: Exception) {
                 onWeatherLoaded.onFailed()
             } finally {
                 httpsURLConnection.disconnect()

@@ -73,7 +73,7 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
     override fun onFailed() {
         Snackbar.make(
             binding.root,
-            getString(R.string.error_load_text) + "${localWeather.city.name}",
+            getString(R.string.error_load_text) + " ${localWeather.city.name}",
             Snackbar.LENGTH_LONG
         ).show()
     }
