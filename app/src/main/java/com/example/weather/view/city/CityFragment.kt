@@ -69,16 +69,19 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
         arguments?.let {
             it.getParcelable<WeatherData>(BUNDLE_KEY)?.let {
                 localWeather = it
-                val intent = Intent(requireActivity(), CityService::class.java)
-                intent.putExtra(LATITUDE, localWeather.city.lat)
-                intent.putExtra(LONGITUDE, localWeather.city.lon)
-                requireActivity().startService(intent)
+                requireActivity().startService(
+                    Intent(
+                        requireActivity(),
+                        CityService::class.java
+                    ).apply {
+                        putExtra(LATITUDE_CITY, it.city.lat)
+                        putExtra(LONGITUDE_CITY, it.city.lon)
+                    })
                 LocalBroadcastManager.getInstance(requireActivity())
                     .registerReceiver(receiver, IntentFilter(DETAILS_INTENT_FILTER))
             }
         }
     }
-
 
     private fun setWeatherData(weatherDTO: WeatherDTO) {
         with(binding) {
