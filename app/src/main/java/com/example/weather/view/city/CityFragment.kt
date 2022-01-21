@@ -1,13 +1,17 @@
 package com.example.weather.view.city
 
+import android.content.BroadcastReceiver
+import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.example.weather.R
-import com.example.weather.Utils.BUNDLE_KEY
-import com.example.weather.Utils.WeatherLoader
+import com.example.weather.Utils.*
 import com.example.weather.databinding.FragmentCityBinding
 import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
@@ -22,13 +26,31 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
             return _binding!!
         }
 
-    private val weatherLoader = WeatherLoader(this)
+    //  private val weatherLoader = WeatherLoader(this)
     lateinit var localWeather: WeatherData
 
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
+        LocalBroadcastManager.getInstance(requireActivity())
+
+            .unregisterReceiver(receiver)
     }
+
+    private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
+        override fun onReceive(context: Context?, intent: Intent?) {
+            intent?.let {
+                val weatherDTO = it.getParcelableExtra<WeatherDTO>(BUNDLE_KEY_WEATHER)
+                if (weatherDTO != null) {
+                    setWeatherData(weatherDTO)
+                } else {
+
+                }
+            }
+
+        }
+    }
+
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -47,10 +69,16 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
         arguments?.let {
             it.getParcelable<WeatherData>(BUNDLE_KEY)?.let {
                 localWeather = it
-                weatherLoader.loadWeather(it.city.lat, it.city.lon)
+                val intent = Intent(requireActivity(), CityService::class.java)
+                intent.putExtra(LATITUDE, localWeather.city.lat)
+                intent.putExtra(LONGITUDE, localWeather.city.lon)
+                requireActivity().startService(intent)
+                LocalBroadcastManager.getInstance(requireActivity())
+                    .registerReceiver(receiver, IntentFilter(DETAILS_INTENT_FILTER))
             }
         }
     }
+
 
     private fun setWeatherData(weatherDTO: WeatherDTO) {
         with(binding) {
@@ -62,6 +90,7 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
                 feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
             }
         }
+
     }
 
     override fun onLoaded(weatherDTO: WeatherDTO?) {
