@@ -32,8 +32,10 @@ class WeatherLoader(private val onWeatherLoaded: OnWeatherLoaded) {
                     onWeatherLoaded.onLoaded(weatherDTO)
                 }
             } catch (e: Exception) {
-                e.printStackTrace()
-                onWeatherLoaded.onFailed()
+                Handler(Looper.getMainLooper()).post {
+                    e.printStackTrace()
+                    onWeatherLoaded.onFailed()
+                }
             } finally {
                 httpsURLConnection.disconnect()
             }
