@@ -1,27 +1,20 @@
 package com.example.weather.view.city
 
-import android.content.BroadcastReceiver
-import android.content.Context
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.example.weather.BuildConfig
-import com.example.weather.R
-import com.example.weather.Utils.*
+import androidx.lifecycle.ViewModelProvider
+import com.example.weather.Utils.BUNDLE_KEY
 import com.example.weather.databinding.FragmentCityBinding
 import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
-import com.google.android.material.snackbar.Snackbar
-import com.google.gson.Gson
-import okhttp3.*
-import java.io.IOException
+import com.example.weather.viewmodel.CityLoadStatement
+import com.example.weather.viewmodel.DetailsViewModel
 
 
-class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
+class CityFragment : Fragment() {
     private var _binding: FragmentCityBinding? = null
 
     private val binding: FragmentCityBinding
@@ -35,22 +28,26 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
     override fun onDestroy() {
         super.onDestroy()
         _binding = null
-        LocalBroadcastManager.getInstance(requireActivity())
-
-            .unregisterReceiver(receiver)
     }
 
-    private val receiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context?, intent: Intent?) {
-            intent?.let {
-                val weatherDTO = it.getParcelableExtra<WeatherDTO>(BUNDLE_KEY_WEATHER)
-                if (weatherDTO != null) {
-                    setWeatherData(weatherDTO)
-                } else {
+    private val viewModel: DetailsViewModel by lazy {
+        ViewModelProvider(this).get(DetailsViewModel::class.java)
+    }
 
+    private fun renderData(cityLoadStatement: CityLoadStatement) {
+        with(binding) {
+            when (cityLoadStatement) {
+                is CityLoadStatement.Error -> {
+                    // HW
+                }
+                is CityLoadStatement.Loading -> {
+                    // HW
+                }
+                is CityLoadStatement.Success -> {
+                    val weather = cityLoadStatement.weatherData
+                    setWeatherData(weather)
                 }
             }
-
         }
     }
 
@@ -68,10 +65,13 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        viewModel.getLiveData().observe(viewLifecycleOwner, {
+            renderData(it)
+        })
         arguments?.let {
             it.getParcelable<WeatherData>(BUNDLE_KEY)?.let {
                 localWeather = it
-            getWeather()
+                viewModel.getWeatherFromRemoteServer(localWeather.city.lat, localWeather.city.lon)
             }
         }
     }
@@ -86,53 +86,6 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
                 feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
             }
         }
-    }
-
-    override fun onLoaded(weatherDTO: WeatherDTO?) {
-        weatherDTO?.let {
-            setWeatherData(weatherDTO)
-        }
-    }
-
-    override fun onFailed() {
-        Snackbar.make(
-            binding.root,
-            getString(R.string.error_load_text) + " ${localWeather.city.name}",
-            Snackbar.LENGTH_LONG
-        ).show()
-    }
-
-    private var client: OkHttpClient? = null
-
-    private fun getWeather(){
-        if(client==null)
-            client = OkHttpClient()
-
-        val builder= Request.Builder().apply {
-            header(API_KEY, BuildConfig.WEATHER_API_KEY)
-            url(YANDEX_API_URL+YANDEX_API_URL_END_POINT+"?lat=${localWeather.city.lat}&lon=${localWeather.city.lon}")
-        }
-        val request = builder.build()
-        val call = client?.newCall(request)
-
-        call?.enqueue(object : Callback {
-            override fun onFailure(call: Call, e: IOException) {
-                TODO("Not yet implemented")
-            }
-
-            override fun onResponse(call: Call, response: Response) {
-                if(response.isSuccessful){
-                    response.body()?.let {
-                        val json = it.string()
-                        requireActivity().runOnUiThread {
-                            setWeatherData(Gson().fromJson(json, WeatherDTO::class.java))
-                        }
-                    }
-                }else{
-                    // TODO
-                }
-            }
-        })
     }
 
 }
