@@ -3,19 +3,22 @@ package com.example.weather.view.city
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.content.IntentFilter
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
+import com.example.weather.BuildConfig
 import com.example.weather.R
 import com.example.weather.Utils.*
 import com.example.weather.databinding.FragmentCityBinding
 import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.Gson
+import okhttp3.*
+import java.io.IOException
 
 
 class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
@@ -27,7 +30,7 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
         }
 
     //  private val weatherLoader = WeatherLoader(this)
-    lateinit var localWeather: WeatherData
+    private lateinit var localWeather: WeatherData
 
     override fun onDestroy() {
         super.onDestroy()
@@ -51,7 +54,6 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
         }
     }
 
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -69,16 +71,7 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
         arguments?.let {
             it.getParcelable<WeatherData>(BUNDLE_KEY)?.let {
                 localWeather = it
-                requireActivity().startService(
-                    Intent(
-                        requireActivity(),
-                        CityService::class.java
-                    ).apply {
-                        putExtra(LATITUDE_CITY, it.city.lat)
-                        putExtra(LONGITUDE_CITY, it.city.lon)
-                    })
-                LocalBroadcastManager.getInstance(requireActivity())
-                    .registerReceiver(receiver, IntentFilter(DETAILS_INTENT_FILTER))
+            getWeather()
             }
         }
     }
@@ -93,7 +86,6 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
                 feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
             }
         }
-
     }
 
     override fun onLoaded(weatherDTO: WeatherDTO?) {
@@ -110,5 +102,37 @@ class CityFragment : Fragment(), WeatherLoader.OnWeatherLoaded {
         ).show()
     }
 
+    private var client: OkHttpClient? = null
+
+    private fun getWeather(){
+        if(client==null)
+            client = OkHttpClient()
+
+        val builder= Request.Builder().apply {
+            header(API_KEY, BuildConfig.WEATHER_API_KEY)
+            url(YANDEX_API_URL+YANDEX_API_URL_END_POINT+"?lat=${localWeather.city.lat}&lon=${localWeather.city.lon}")
+        }
+        val request = builder.build()
+        val call = client?.newCall(request)
+
+        call?.enqueue(object : Callback {
+            override fun onFailure(call: Call, e: IOException) {
+                TODO("Not yet implemented")
+            }
+
+            override fun onResponse(call: Call, response: Response) {
+                if(response.isSuccessful){
+                    response.body()?.let {
+                        val json = it.string()
+                        requireActivity().runOnUiThread {
+                            setWeatherData(Gson().fromJson(json, WeatherDTO::class.java))
+                        }
+                    }
+                }else{
+                    // TODO
+                }
+            }
+        })
+    }
 
 }
