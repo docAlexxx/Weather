@@ -15,4 +15,6 @@
     <dimen name="item_elevation">2dp</dimen>
     <dimen name="item_stroke_width">2dp</dimen>
     <dimen name="item_text_size">40sp</dimen>
+    <dimen name="margin_weatherIcon">15dp</dimen>
+    <dimen name="size_weatherIcon">100dp</dimen>
 </resources>
