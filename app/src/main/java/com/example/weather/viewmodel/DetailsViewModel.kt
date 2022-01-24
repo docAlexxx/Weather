@@ -2,15 +2,11 @@ package com.example.weather.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.weather.Utils.YANDEX_API_URL
-import com.example.weather.Utils.YANDEX_API_URL_END_POINT
 import com.example.weather.model.WeatherDTO
 import com.example.weather.repo.RepoCityDetailsImpl
-import com.google.gson.Gson
-import okhttp3.Call
-import okhttp3.Callback
-import okhttp3.Response
-import java.io.IOException
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class DetailsViewModel(
     private val liveData: MutableLiveData<CityLoadStatement> = MutableLiveData(),
@@ -24,32 +20,22 @@ class DetailsViewModel(
 
     fun getWeatherFromRemoteServer(lat: Double, lon: Double) {
         liveData.postValue(CityLoadStatement.Loading(0))
-        repoImpl.getWeatherFromServer(
-            YANDEX_API_URL + YANDEX_API_URL_END_POINT + "?lat=${lat}&lon=${lon}",
-            callback
-        )
+        repoImpl.getWeatherFromServer(lat, lon, callback)
     }
 
-    private val callback = object : Callback {
-        override fun onFailure(call: Call, e: IOException) {
+    private val callback = object : Callback<WeatherDTO> {
+
+        override fun onFailure(call: Call<WeatherDTO>, t: Throwable) {
             TODO("Not yet implemented")
         }
 
-        override fun onResponse(call: Call, response: Response) {
+        override fun onResponse(call: Call<WeatherDTO>, response: Response<WeatherDTO>) {
             if (response.isSuccessful) {
                 response.body()?.let {
-                    val json = it.string()
-                    liveData.postValue(
-                        CityLoadStatement.Success(
-                            Gson().fromJson(
-                                json,
-                                WeatherDTO::class.java
-                            )
-                        )
-                    )
+                    liveData.postValue(CityLoadStatement.Success(it))
                 }
             } else {
-                // TODO HW
+                // HW
             }
         }
     }

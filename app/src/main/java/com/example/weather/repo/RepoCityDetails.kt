@@ -1,8 +1,7 @@
 package com.example.weather.repo
 
-import com.example.weather.model.WeatherData
-import okhttp3.Callback
+import com.example.weather.model.WeatherDTO
 
 interface RepoCityDetails {
-    fun getWeatherFromServer(url:String,callback: Callback)
+    fun getWeatherFromServer(lat: Double,lon: Double,callback: retrofit2.Callback<WeatherDTO>)
 }

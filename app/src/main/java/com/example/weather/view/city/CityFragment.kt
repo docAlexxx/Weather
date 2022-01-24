@@ -22,7 +22,6 @@ class CityFragment : Fragment() {
             return _binding!!
         }
 
-    //  private val weatherLoader = WeatherLoader(this)
     private lateinit var localWeather: WeatherData
 
     override fun onDestroy() {
