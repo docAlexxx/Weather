@@ -6,12 +6,15 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import coil.api.load
+import com.bumptech.glide.Glide
 import com.example.weather.Utils.BUNDLE_KEY
 import com.example.weather.databinding.FragmentCityBinding
 import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
 import com.example.weather.viewmodel.CityLoadStatement
 import com.example.weather.viewmodel.DetailsViewModel
+import com.squareup.picasso.Picasso
 
 
 class CityFragment : Fragment() {
@@ -83,6 +86,16 @@ class CityFragment : Fragment() {
                     "${weatherDTO.info.lat}, ${weatherDTO.info.lon}"
                 temperatureValue.text = "${weatherDTO.fact.temp}"
                 feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
+
+//                Glide.with(headerIcon.context)
+//                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+//                    .into(headerIcon)
+
+//                Picasso.get()
+//                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+//                    .into(headerIcon)
+
+                headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
             }
         }
     }
