@@ -1,7 +1,8 @@
-package com.example.weather.model
+package com.example.weather.repo
 
-interface Repo {
-    fun getWeatherFromServer(): WeatherData
+import com.example.weather.model.WeatherData
+
+interface RepoCitiesList {
     fun getWeatherFromLocalStorageRus(): List<WeatherData>
     fun getWeatherFromLocalStorageWorld(): List<WeatherData>
 }

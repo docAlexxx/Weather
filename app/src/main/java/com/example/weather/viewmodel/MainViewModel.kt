@@ -2,14 +2,14 @@ package com.example.weather.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.weather.model.RepoImpl
+import com.example.weather.repo.RepoCitiesListImpl
 import java.lang.Thread.sleep
 
 class MainViewModel(
     private val liveData: MutableLiveData<AppStatement> = MutableLiveData(),
 ) : ViewModel() {
-    private val repoImpl: RepoImpl by lazy {
-        RepoImpl()
+    private val repoImpl: RepoCitiesListImpl by lazy {
+        RepoCitiesListImpl()
     }
 
     fun getLiveData() = liveData
