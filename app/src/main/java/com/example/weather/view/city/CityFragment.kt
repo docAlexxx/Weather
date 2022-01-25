@@ -86,10 +86,15 @@ class CityFragment : Fragment() {
         with(binding) {
             localWeather.run {
                 cityName.text = city.name
-                cityCoordinates.text =
-                    "${weatherDTO.info.lat}, ${weatherDTO.info.lon}"
+       //         cityCoordinates.text =
+      //              "${weatherDTO.info.lat}, ${weatherDTO.info.lon}"
+                minTempValue.text = "${weatherDTO.forecast.parts[0].tempMin}"
+                maxTempValue.text = "${weatherDTO.forecast.parts[0].tempMax}"
                 temperatureValue.text = "${weatherDTO.fact.temp}"
                 feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
+                windDirection.text = "${weatherDTO.fact.windDir}"
+                windSpeed.text = "${weatherDTO.fact.windSpeed}"
+
 
 //                Glide.with(headerIcon.context)
 //                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")

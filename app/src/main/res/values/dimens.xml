@@ -8,6 +8,10 @@
     <dimen name="feels_like_text_size">30sp</dimen>
     <dimen name="coordinates_text_size">15sp</dimen>
     <dimen name="temperature_label_text_size">20sp</dimen>
+    <dimen name="minmax_temp_label_text_size">10sp</dimen>
+    <dimen name="minmax_temp_text_size">30sp</dimen>
+    <dimen name="wind_label_text_size">15sp</dimen>
+    <dimen name="wind_text_size">20sp</dimen>
     <dimen name="marginFAB">15dp</dimen>
     <dimen name="max_size_FAB">56dp</dimen>
     <dimen name="item_margin">5dp</dimen>

@@ -34,28 +34,6 @@
             app:layout_constraintTop_toBottomOf="@+id/headerIcon"
             tools:text="Samara" />
 
-        <TextView
-            android:id="@+id/coordinatesLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_coordinates"
-            android:textSize="@dimen/coordinates_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityName"
-            tools:text="@string/coordinates_label_text" />
-
-        <TextView
-            android:id="@+id/cityCoordinates"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/margin_coordinates"
-            android:textSize="@dimen/coordinates_text_size"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/coordinatesLabel"
-            tools:text="53.2001, 50.15" />
-
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/weatherIcon"
             android:layout_width="@dimen/size_weatherIcon"
@@ -63,7 +41,7 @@
             android:layout_marginTop="@dimen/margin_weatherIcon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/cityCoordinates" />
+            app:layout_constraintTop_toBottomOf="@+id/cityName" />
 
         <TextView
             android:id="@+id/temperatureLabel"
@@ -77,6 +55,28 @@
             app:layout_constraintTop_toBottomOf="@+id/weatherIcon" />
 
         <TextView
+            android:id="@+id/minTempLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_temperature"
+            android:text="@string/min_text"
+            android:textSize="@dimen/minmax_temp_label_text_size"
+            app:layout_constraintEnd_toStartOf="@+id/temperatureLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/temperatureLabel" />
+
+        <TextView
+            android:id="@+id/maxTempLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_temperature"
+            android:text="@string/max_text"
+            android:textSize="@dimen/minmax_temp_label_text_size"
+            app:layout_constraintStart_toEndOf="@+id/temperatureLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/temperatureLabel" />
+
+        <TextView
             android:id="@+id/temperatureValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -87,6 +87,28 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/temperatureLabel"
             tools:text="-15" />
+
+        <TextView
+            android:id="@+id/minTempValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_temperature"
+            android:text="-20"
+            android:textSize="@dimen/minmax_temp_text_size"
+            app:layout_constraintEnd_toStartOf="@+id/temperatureLabel"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/temperatureValue" />
+
+        <TextView
+            android:id="@+id/maxTempValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_temperature"
+            android:text="-10"
+            android:textSize="@dimen/minmax_temp_text_size"
+            app:layout_constraintStart_toEndOf="@+id/temperatureLabel"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@+id/temperatureValue" />
 
         <TextView
             android:id="@+id/feelsLikeLabel"
@@ -110,6 +132,62 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/feelsLikeLabel"
             tools:text="-20" />
+
+        <TextView
+            android:id="@+id/windLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_temperature"
+            android:text="@string/wind_label"
+            android:textSize="@dimen/temperature_label_text_size"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/feelsLikeValue" />
+
+        <TextView
+            android:id="@+id/windDirectionLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_temperature"
+            android:text="@string/direction_label_text"
+            android:textSize="@dimen/wind_label_text_size"
+            app:layout_constraintEnd_toStartOf="@+id/windSpeed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/windLabel" />
+
+        <TextView
+            android:id="@+id/windSpeedLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_temperature"
+            android:text="@string/speed_label_text"
+            android:textSize="@dimen/wind_label_text_size"
+            app:layout_constraintStart_toEndOf="@+id/windDirection"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/windLabel" />
+
+        <TextView
+            android:id="@+id/windDirection"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_temperature"
+            android:text="SW"
+            android:textSize="@dimen/wind_text_size"
+            app:layout_constraintEnd_toStartOf="@+id/windSpeed"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/windDirectionLabel" />
+
+        <TextView
+            android:id="@+id/windSpeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_temperature"
+            android:text="13"
+            android:textSize="@dimen/wind_text_size"
+            app:layout_constraintStart_toEndOf="@+id/windDirection"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/windSpeedLabel" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <FrameLayout
