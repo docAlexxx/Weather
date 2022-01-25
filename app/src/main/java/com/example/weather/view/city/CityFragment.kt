@@ -104,6 +104,7 @@ class CityFragment : Fragment() {
                 feelsLikeValue.text = "${weatherDTO.fact.feelsLike}"
                 windDirection.text = "${weatherDTO.fact.windDir}"
                 windSpeed.text = "${weatherDTO.fact.windSpeed}"
+                windArrow.setRotation(arrowRotation(weatherDTO.fact.windDir))
 
 
 //                Glide.with(headerIcon.context)
@@ -118,6 +119,20 @@ class CityFragment : Fragment() {
                 weatherIcon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact.icon}.svg")
             }
         }
+    }
+
+    private fun arrowRotation(windDir: String): Float {
+        when (windDir){
+            "s" -> return 0F
+            "sw" -> return 45F
+            "w" -> return 90F
+            "nw" -> return 135F
+            "n" -> return 180F
+            "ne" -> return 225F
+            "e" -> return 270F
+            "se" -> return 315F
+            else -> return 0F
+      }
     }
 
     private fun ImageView.loadUrl(url: String) {

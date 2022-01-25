@@ -7,7 +7,9 @@
     android:background="#FFFFFF"
     android:clickable="true"
     tools:context=".view.city.CityFragment">
-
+<ScrollView
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/mainView"
         android:layout_width="match_parent"
@@ -151,7 +153,7 @@
             android:layout_marginTop="@dimen/margin_temperature"
             android:text="@string/direction_label_text"
             android:textSize="@dimen/wind_label_text_size"
-            app:layout_constraintEnd_toStartOf="@+id/windSpeed"
+            app:layout_constraintEnd_toStartOf="@+id/windArrow"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/windLabel" />
 
@@ -162,7 +164,7 @@
             android:layout_marginTop="@dimen/margin_temperature"
             android:text="@string/speed_label_text"
             android:textSize="@dimen/wind_label_text_size"
-            app:layout_constraintStart_toEndOf="@+id/windDirection"
+            app:layout_constraintStart_toEndOf="@+id/windArrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/windLabel" />
 
@@ -173,7 +175,7 @@
             android:layout_marginTop="@dimen/margin_temperature"
             android:text="SW"
             android:textSize="@dimen/wind_text_size"
-            app:layout_constraintEnd_toStartOf="@+id/windSpeed"
+            app:layout_constraintEnd_toStartOf="@+id/windArrow"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/windDirectionLabel" />
 
@@ -184,12 +186,22 @@
             android:layout_marginTop="@dimen/margin_temperature"
             android:text="13"
             android:textSize="@dimen/wind_text_size"
-            app:layout_constraintStart_toEndOf="@+id/windDirection"
+            app:layout_constraintStart_toEndOf="@+id/windArrow"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/windSpeedLabel" />
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/windArrow"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="30dp"
+            android:src="@drawable/arrow"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/windLabel" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>
     <FrameLayout
         android:id="@+id/loadingLayout"
         android:layout_width="match_parent"
