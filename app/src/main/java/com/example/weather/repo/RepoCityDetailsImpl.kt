@@ -1,7 +1,6 @@
 package com.example.weather.repo
 
 import com.example.weather.BuildConfig
-import com.example.weather.Utils.API_KEY
 import com.example.weather.Utils.YANDEX_API_URL
 import com.example.weather.model.WeatherDTO
 import com.google.gson.GsonBuilder

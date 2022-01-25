@@ -1,5 +1,7 @@
 package com.example.weather.viewmodel
 
+import android.app.Activity
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather.model.WeatherDTO
@@ -35,7 +37,15 @@ class DetailsViewModel(
                     liveData.postValue(CityLoadStatement.Success(it))
                 }
             } else {
-                // HW
+                var errorText = response.message() + "(" + response.code() + ")"
+                when (response.code()) {
+                    in 300..399 -> errorText = "Redirection! " + errorText
+                    in 400..499 -> errorText = "Client Error! " + errorText
+                    in 500..599 -> errorText = "Server Error! " + errorText
+                    else -> errorText = "Informational! " + errorText
+                }
+                liveData.postValue(CityLoadStatement.Error(errorText))
+                val sfd = "bh"
             }
         }
     }
