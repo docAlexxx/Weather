@@ -87,7 +87,7 @@ class ListFragment : Fragment(), OnItemClick {
                         adapter.setWeather(appState.weatherData)
                         binding.root.showSnackBarWithoutAction(
                             getString(R.string.success_text),
-                            Snackbar.LENGTH_LONG
+                            Snackbar.LENGTH_SHORT
                         )
                     }
                 }
