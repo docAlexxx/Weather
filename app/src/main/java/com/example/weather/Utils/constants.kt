@@ -1,7 +1,7 @@
 package com.example.weather.Utils
 
 const val BUNDLE_KEY = "key"
-const val API_KEY ="X-Yandex-API-Key"
+const val API_KEY = "X-Yandex-API-Key"
 const val BUNDLE_KEY_WEATHER = "key_weather_dto"
 const val LATITUDE_CITY = "Latitude"
 const val LONGITUDE_CITY = "Longitude"

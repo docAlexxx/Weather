@@ -11,7 +11,6 @@ import coil.ImageLoader
 import coil.decode.SvgDecoder
 import coil.load
 import coil.request.ImageRequest
-import com.bumptech.glide.Glide
 import com.example.weather.R
 import com.example.weather.Utils.BUNDLE_KEY
 import com.example.weather.databinding.FragmentCityBinding
@@ -20,7 +19,6 @@ import com.example.weather.model.WeatherData
 import com.example.weather.viewmodel.CityLoadStatement
 import com.example.weather.viewmodel.DetailsViewModel
 import com.google.android.material.snackbar.Snackbar
-import com.squareup.picasso.Picasso
 import kotlinx.android.synthetic.main.fragment_list.*
 
 
@@ -48,9 +46,13 @@ class CityFragment : Fragment() {
             when (cityLoadStatement) {
                 is CityLoadStatement.Error -> {
                     loadingLayout.visibility = View.GONE
-                    Snackbar.make(binding.mainView, cityLoadStatement.error ,Snackbar.LENGTH_LONG).setAction(R.string.retry_text){
-                        viewModel.getWeatherFromRemoteServer(localWeather.city.lat,localWeather.city.lon)
-                    }.show()
+                    Snackbar.make(binding.mainView, cityLoadStatement.error, Snackbar.LENGTH_LONG)
+                        .setAction(R.string.retry_text) {
+                            viewModel.getWeatherFromRemoteServer(
+                                localWeather.city.lat,
+                                localWeather.city.lon
+                            )
+                        }.show()
                 }
 
                 is CityLoadStatement.Loading -> {
@@ -94,8 +96,8 @@ class CityFragment : Fragment() {
         with(binding) {
             localWeather.run {
                 cityName.text = city.name
-       //         cityCoordinates.text =
-      //              "${weatherDTO.info.lat}, ${weatherDTO.info.lon}"
+                //         cityCoordinates.text =
+                //              "${weatherDTO.info.lat}, ${weatherDTO.info.lon}"
                 minTempValue.text = "${weatherDTO.forecast.parts[0].tempMin}"
                 maxTempValue.text = "${weatherDTO.forecast.parts[0].tempMax}"
                 temperatureValue.text = "${weatherDTO.fact.temp}"

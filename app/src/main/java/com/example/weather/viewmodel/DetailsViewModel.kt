@@ -1,7 +1,5 @@
 package com.example.weather.viewmodel
 
-import android.app.Activity
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.weather.model.WeatherDTO
@@ -45,7 +43,6 @@ class DetailsViewModel(
                     else -> errorText = "Informational! " + errorText
                 }
                 liveData.postValue(CityLoadStatement.Error(errorText))
-                val sfd = "bh"
             }
         }
     }
