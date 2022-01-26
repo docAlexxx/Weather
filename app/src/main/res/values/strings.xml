@@ -20,4 +20,11 @@
     <string name="direction_label_text">direction</string>
     <string name="speed_label_text">speed</string>
 
+    <string name="head_picture1">https://freepngimg.com/thumb/city/36275-3-city-hd.png</string>
+    <string name="head_picture2">https://cdn.pixabay.com/photo/2016/05/03/09/40/thunder-1368797_960_720.jpg</string>
+    <string name="head_picture3">https://cdn.pixabay.com/photo/2017/12/01/15/44/merligen-2991122_960_720.jpg</string>
+    <string name="head_picture4">https://cdn.pixabay.com/photo/2016/09/10/23/08/lisbon-1660337_960_720.jpg</string>
+    <string name="head_picture5">https://cdn.pixabay.com/photo/2016/08/23/17/49/weather-1615103_960_720.jpg</string>
+
+
 </resources>

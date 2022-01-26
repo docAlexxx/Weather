@@ -115,7 +115,7 @@ class CityFragment : Fragment() {
 //                    .load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
 //                    .into(headerIcon)
 
-                headerIcon.load("https://freepngimg.com/thumb/city/36275-3-city-hd.png")
+                headerIcon.load(getString(R.string.head_picture3))
                 weatherIcon.loadUrl("https://yastatic.net/weather/i/icons/funky/dark/${weatherDTO.fact.icon}.svg")
             }
         }
