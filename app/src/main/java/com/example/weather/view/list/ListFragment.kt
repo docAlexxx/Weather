@@ -1,6 +1,7 @@
 package com.example.weather.view.list
 
 import android.os.Bundle
+import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,12 +10,14 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.Utils.BUNDLE_KEY
+import com.example.weather.Utils.KEY_SP
 import com.example.weather.databinding.FragmentListBinding
 import com.example.weather.model.WeatherData
 import com.example.weather.view.city.CityFragment
 import com.example.weather.viewmodel.AppStatement
 import com.example.weather.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
+import kotlin.properties.Delegates
 
 class ListFragment : Fragment(), OnItemClick {
 
@@ -26,7 +29,8 @@ class ListFragment : Fragment(), OnItemClick {
 
     private val adapter = ListFragmentAdapter(this)
 
-    private var isRussian = true
+
+    var isRussian by Delegates.notNull<Boolean>()
 
     private val viewModel: MainViewModel by lazy {
         ViewModelProvider(this).get(MainViewModel::class.java)
@@ -41,7 +45,9 @@ class ListFragment : Fragment(), OnItemClick {
         initView()
         viewModel.getLiveData()
             .observe(viewLifecycleOwner, Observer<AppStatement> { showData(it) })
-        viewModel.getWeatherFromLocalSourceRus()
+        val sp = getDefaultSharedPreferences(requireContext())
+        isRussian = sp.getBoolean(KEY_SP, false)
+        getCitiesList()
     }
 
     private fun initView() {
@@ -53,8 +59,7 @@ class ListFragment : Fragment(), OnItemClick {
         }
     }
 
-    private fun changeRegion() {
-        isRussian = !isRussian
+    private fun getCitiesList() {
         with(binding.listFragmentFAB) {
             viewModel.apply {
                 if (isRussian) {
@@ -66,6 +71,13 @@ class ListFragment : Fragment(), OnItemClick {
                 }
             }
         }
+    }
+
+    private fun changeRegion() {
+        isRussian = !isRussian
+        val sp = getDefaultSharedPreferences(requireContext())
+        sp.edit().putBoolean(KEY_SP, isRussian).apply()
+        getCitiesList()
     }
 
     private fun showData(appState: AppStatement) {
@@ -85,10 +97,10 @@ class ListFragment : Fragment(), OnItemClick {
                     is AppStatement.Success -> {
                         visibility = View.GONE
                         adapter.setWeather(appState.weatherData)
-                        binding.root.showSnackBarWithoutAction(
-                            getString(R.string.success_text),
-                            Snackbar.LENGTH_SHORT
-                        )
+                        //   binding.root.showSnackBarWithoutAction(
+                        //       getString(R.string.success_text),
+                        //       Snackbar.LENGTH_SHORT
+                        //   )
                     }
                 }
             }
