@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weather.R
 import com.example.weather.databinding.ActivityMainBinding
+import com.example.weather.room.App
 import com.example.weather.view.list.ListFragment
 
 class MainActivity : AppCompatActivity() {
@@ -20,7 +21,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ListFragment.newInstance()).commit()
         }
-
+        val listWeather = App.getHistoryWeatherDao().getAllHistoryWeather()
     }
 
 
