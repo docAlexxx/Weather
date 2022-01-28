@@ -1,10 +1,13 @@
 package com.example.weather.view
 
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.example.weather.R
 import com.example.weather.databinding.ActivityMainBinding
 import com.example.weather.room.App
+import com.example.weather.view.history.HistoryFragment
 import com.example.weather.view.list.ListFragment
 
 class MainActivity : AppCompatActivity() {
@@ -24,5 +27,24 @@ class MainActivity : AppCompatActivity() {
         val listWeather = App.getHistoryWeatherDao().getAllHistoryWeather()
     }
 
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_screen_menu, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return return when (item.itemId) {
+
+            R.id.menu_history -> {
+                supportFragmentManager.beginTransaction()
+                    .add(R.id.container, HistoryFragment.newInstance()).addToBackStack("").commit()
+                true
+            }
+            else -> {
+                super.onOptionsItemSelected(item)
+            }
+        }
+
+    }
 
 }
