@@ -2,8 +2,11 @@ package com.example.weather.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.example.weather.model.City
 import com.example.weather.model.WeatherDTO
+import com.example.weather.model.WeatherData
 import com.example.weather.repo.RepoCityDetailsImpl
+import com.example.weather.repo.RepoHistoryWeatherImpl
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -12,11 +15,16 @@ class DetailsViewModel(
     private val liveData: MutableLiveData<CityLoadStatement> = MutableLiveData(),
 ) : ViewModel() {
 
+    private val repoHistoryWeatherImpl: RepoHistoryWeatherImpl = RepoHistoryWeatherImpl()
     private val repoImpl: RepoCityDetailsImpl by lazy {
         RepoCityDetailsImpl()
     }
 
     fun getLiveData() = liveData
+
+    fun saveWeather(weather: WeatherData){
+        repoHistoryWeatherImpl.saveWeather(weather)
+    }
 
     fun getWeatherFromRemoteServer(lat: Double, lon: Double) {
         liveData.postValue(CityLoadStatement.Loading(0))

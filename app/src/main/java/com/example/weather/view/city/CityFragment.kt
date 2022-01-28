@@ -94,6 +94,8 @@ class CityFragment : Fragment() {
 
     private fun setWeatherData(weatherDTO: WeatherDTO) {
         with(binding) {
+           // weather.city = localWeather.city
+            viewModel.saveWeather(localWeather)
             localWeather.run {
                 cityName.text = city.name
                 //         cityCoordinates.text =
