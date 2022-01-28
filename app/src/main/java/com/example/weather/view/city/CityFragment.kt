@@ -94,7 +94,7 @@ class CityFragment : Fragment() {
 
     private fun setWeatherData(weatherDTO: WeatherDTO) {
         with(binding) {
-           // weather.city = localWeather.city
+            // weather.city = localWeather.city
             viewModel.saveWeather(localWeather)
             localWeather.run {
                 cityName.text = city.name
@@ -124,7 +124,7 @@ class CityFragment : Fragment() {
     }
 
     private fun arrowRotation(windDir: String): Float {
-        when (windDir){
+        when (windDir) {
             "s" -> return 0F
             "sw" -> return 45F
             "w" -> return 90F
@@ -134,7 +134,7 @@ class CityFragment : Fragment() {
             "e" -> return 270F
             "se" -> return 315F
             else -> return 0F
-      }
+        }
     }
 
     private fun ImageView.loadUrl(url: String) {

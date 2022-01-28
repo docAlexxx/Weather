@@ -22,7 +22,7 @@ class DetailsViewModel(
 
     fun getLiveData() = liveData
 
-    fun saveWeather(weather: WeatherData){
+    fun saveWeather(weather: WeatherData) {
         repoHistoryWeatherImpl.saveWeather(weather)
     }
 

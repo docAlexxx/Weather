@@ -24,7 +24,7 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ListFragment.newInstance()).commit()
         }
-        val listWeather = App.getHistoryWeatherDao().getAllHistoryWeather()
+//        val listWeather = App.getHistoryWeatherDao().getAllHistoryWeather()
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -33,11 +33,12 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-       return when (item.itemId) {
+        return when (item.itemId) {
 
             R.id.menu_history -> {
                 supportFragmentManager.beginTransaction()
-                    .add(R.id.fragment_container, HistoryFragment.newInstance()).addToBackStack("").commit()
+                    .add(R.id.fragment_container, HistoryFragment.newInstance()).addToBackStack("")
+                    .commit()
                 true
             }
             else -> {

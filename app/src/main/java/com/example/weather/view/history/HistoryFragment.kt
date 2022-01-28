@@ -16,7 +16,7 @@ import com.example.weather.viewmodel.AppStatement
 import com.example.weather.viewmodel.HistoryViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class HistoryFragment  : Fragment(), OnItemClick {
+class HistoryFragment : Fragment(), OnItemClick {
 
     private var _binding: FragmentHistoryBinding? = null
     private val binding: FragmentHistoryBinding
@@ -34,7 +34,8 @@ class HistoryFragment  : Fragment(), OnItemClick {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.getLiveData().observe(viewLifecycleOwner, Observer<AppStatement> { renderData(it) })
+        viewModel.getLiveData()
+            .observe(viewLifecycleOwner, Observer<AppStatement> { renderData(it) })
         viewModel.getAllHistory()
         binding.historyFragmentRecyclerview.adapter = adapter
     }
@@ -45,11 +46,12 @@ class HistoryFragment  : Fragment(), OnItemClick {
             when (appState) {
                 is AppStatement.Error -> {
                     binding.root.showSnackBarWithoutAction(
-                               getString(R.string.error_history_load_text),
-                               Snackbar.LENGTH_SHORT
-                           )
+                        getString(R.string.error_history_load_text),
+                        Snackbar.LENGTH_SHORT
+                    )
                 }
-                is AppStatement.Loading -> {}
+                is AppStatement.Loading -> {
+                }
                 is AppStatement.Success -> {
                     adapter.setWeather(appState.weatherData)
                 }

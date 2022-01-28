@@ -15,5 +15,5 @@ interface HistoryWeatherDao {
     fun update(entity: HistoryWeatherEntity)
 
     @Query("select * FROM history_weather_entity")
-    fun getAllHistoryWeather():List<HistoryWeatherEntity>
+    fun getAllHistoryWeather(): List<HistoryWeatherEntity>
 }

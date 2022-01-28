@@ -10,26 +10,29 @@
         android:id="@+id/cityName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="20sp"
+        android:padding="@dimen/history_item_padding"
+        android:textSize="@dimen/history_item_text_size"
         tools:text="Samara" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/temperature"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="20sp"
+        android:padding="@dimen/history_item_padding"
+        android:textSize="@dimen/history_item_text_size"
         tools:text="20" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/feelsLike"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="10dp"
-        android:textSize="20sp"
+        android:padding="@dimen/history_item_padding"
+        android:textSize="@dimen/history_item_text_size"
         tools:text="15" />
+
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/icon"
-        android:layout_width="35dp"
-        android:layout_height="35dp" />
+        android:layout_width="@dimen/history_item_icon_size"
+        android:layout_height="@dimen/history_item_icon_size" />
 
 </LinearLayout>

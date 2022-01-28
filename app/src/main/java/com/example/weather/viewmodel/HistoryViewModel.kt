@@ -15,8 +15,10 @@ class HistoryViewModel(
     fun getLiveData() = liveData
 
     fun getAllHistory() {
-        val listWeather = repoHistoryWeatherImpl.getAllHistoryWeather()
-        liveData.postValue(AppStatement.Success(listWeather))
+      //  Thread {
+            val listWeather = repoHistoryWeatherImpl.getAllHistoryWeather()
+            liveData.postValue(AppStatement.Success(listWeather))
+      //  }.start()
 
     }
 

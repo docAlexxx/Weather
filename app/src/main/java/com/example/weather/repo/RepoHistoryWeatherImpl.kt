@@ -4,8 +4,9 @@ import com.example.weather.model.City
 import com.example.weather.model.WeatherData
 import com.example.weather.room.App
 import com.example.weather.room.HistoryWeatherEntity
+import java.util.*
 
-class RepoHistoryWeatherImpl: RepoHistoryWeather {
+class RepoHistoryWeatherImpl : RepoHistoryWeather {
     override fun getAllHistoryWeather(): List<WeatherData> {
         return convertHistoryWeatherEntityToWeatherData(
             App.getHistoryWeatherDao().getAllHistoryWeather()
@@ -34,7 +35,7 @@ class RepoHistoryWeatherImpl: RepoHistoryWeather {
             weather.city.name,
             weather.temperature,
             weather.feelsLike,
-            weather.icon
+            weather.icon,
         )
 
 }
