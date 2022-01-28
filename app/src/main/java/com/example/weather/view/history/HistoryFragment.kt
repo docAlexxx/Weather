@@ -24,8 +24,8 @@ class HistoryFragment  : Fragment(), OnItemClick {
             return _binding!!
         }
 
-    private val adapter: ListFragmentAdapter by lazy {
-        ListFragmentAdapter(this)
+    private val adapter: HistoryFragmentAdapter by lazy {
+        HistoryFragmentAdapter(this)
     }
 
     private val viewModel: HistoryViewModel by lazy {

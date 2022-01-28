@@ -33,11 +33,11 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return return when (item.itemId) {
+       return when (item.itemId) {
 
             R.id.menu_history -> {
                 supportFragmentManager.beginTransaction()
-                    .add(R.id.container, HistoryFragment.newInstance()).addToBackStack("").commit()
+                    .add(R.id.fragment_container, HistoryFragment.newInstance()).addToBackStack("").commit()
                 true
             }
             else -> {
