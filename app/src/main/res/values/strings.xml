@@ -12,6 +12,7 @@
     <string name="client_error_text">Client Error! </string>
     <string name="server_error_text">Server Error! </string>
     <string name="infomational_text">Informational! </string>
+    <string name="error_history_load_text">Can\'t load history Database:</string>
 
     <string name="error_load_text">Error by loading data for</string>
     <string name="min_text">MIN</string>
