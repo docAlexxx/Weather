@@ -15,6 +15,8 @@ import com.example.weather.Utils.REQUEST_CODE
 import com.example.weather.databinding.FragmentPhonelistBinding
 import android.R.id
 import android.provider.Telephony.Mms.Addr.CONTACT_ID
+import android.content.Intent
+import android.net.Uri
 
 
 class PhonelistFragment : Fragment() {
@@ -154,7 +156,16 @@ class PhonelistFragment : Fragment() {
         binding.containerForContacts.addView(TextView(requireContext()).apply {
             text = name + ": " + number
             textSize = 30f
+            setOnClickListener {
+                onItemClick(number)
+            }
 
         })
+    }
+
+    private fun onItemClick(number: String) {
+        val intent = Intent(Intent.ACTION_DIAL);
+        intent.data = Uri.parse("tel:$number")
+        startActivity(intent)
     }
 }
