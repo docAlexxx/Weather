@@ -2,7 +2,6 @@ package com.example.weather.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.example.weather.model.City
 import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
 import com.example.weather.repo.RepoCityDetailsImpl

@@ -10,7 +10,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.databinding.FragmentHistoryBinding
 import com.example.weather.model.WeatherData
-import com.example.weather.view.list.ListFragmentAdapter
 import com.example.weather.view.list.OnItemClick
 import com.example.weather.viewmodel.AppStatement
 import com.example.weather.viewmodel.HistoryViewModel

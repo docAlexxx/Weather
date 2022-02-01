@@ -2,7 +2,6 @@ package com.example.weather.room
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import java.util.*
 
 @Entity(tableName = "history_weather_entity")
 data class HistoryWeatherEntity(

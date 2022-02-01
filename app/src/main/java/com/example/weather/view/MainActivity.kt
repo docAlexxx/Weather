@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity
 import com.example.weather.R
 import com.example.weather.databinding.ActivityMainBinding
 import com.example.weather.lesson9.PhonelistFragment
-import com.example.weather.room.App
 import com.example.weather.view.history.HistoryFragment
 import com.example.weather.view.list.ListFragment
 
