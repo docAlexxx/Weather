@@ -23,8 +23,10 @@ class DetailsViewModel(
     fun getLiveData() = liveData
 
     fun saveWeather(weather: WeatherData) {
-        repoHistoryWeatherImpl.saveWeather(weather)
-    }
+        Thread {
+            repoHistoryWeatherImpl.saveWeather(weather)
+        }.start()
+        }
 
     fun getWeatherFromRemoteServer(lat: Double, lon: Double) {
         liveData.postValue(CityLoadStatement.Loading(0))

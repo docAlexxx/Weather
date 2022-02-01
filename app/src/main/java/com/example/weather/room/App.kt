@@ -25,7 +25,7 @@ class App : Application() {
                         HistoryDatabase::class.java,
                         DB_NAME
                     )
-                          .allowMainThreadQueries() // TODO нужно убрать эту строку
+                       //   .allowMainThreadQueries()
                         .build()
                 }
             }
