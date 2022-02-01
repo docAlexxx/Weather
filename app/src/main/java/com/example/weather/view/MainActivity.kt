@@ -44,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_phonelist -> {
                 supportFragmentManager.beginTransaction()
-                    .add(R.id.container, PhonelistFragment.newInstance()).addToBackStack("").commit()
+                    .add(R.id.fragment_container, PhonelistFragment.newInstance()).addToBackStack("").commit()
                 true
             }
             else -> {

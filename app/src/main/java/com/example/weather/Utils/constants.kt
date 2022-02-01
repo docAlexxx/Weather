@@ -9,3 +9,4 @@ const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
 const val YANDEX_API_URL = "https://api.weather.yandex.ru/"
 const val YANDEX_API_URL_END_POINT = "v2/informers"
 const val KEY_SP ="Key_SP"
+const val REQUEST_CODE = 555
