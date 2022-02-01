@@ -13,6 +13,9 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.weather.Utils.REQUEST_CODE
 import com.example.weather.databinding.FragmentPhonelistBinding
+import android.R.id
+import android.provider.Telephony.Mms.Addr.CONTACT_ID
+
 
 class PhonelistFragment : Fragment() {
 
@@ -78,7 +81,7 @@ class PhonelistFragment : Fragment() {
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
-             if (requestCode == REQUEST_CODE) {
+        if (requestCode == REQUEST_CODE) {
 
             when {
                 (grantResults[0] == PackageManager.PERMISSION_GRANTED) -> {
@@ -108,21 +111,50 @@ class PhonelistFragment : Fragment() {
                 null,
                 ContactsContract.Contacts.DISPLAY_NAME + " ASC"
             )
-            cursor?.let { cursor->
+
+
+            cursor?.let { cursor ->
                 for (i in 0 until cursor.count) {
                     cursor.moveToPosition(i)
-                    val name = cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                    addView(name)
+                    val name =
+                        cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
+                    val contactId =
+                        cursor.getString(cursor.getColumnIndex(ContactsContract.Contacts.NAME_RAW_CONTACT_ID))
+
+                    val phone = contentResolver.query(
+                        ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                        null,
+                        null,
+                        null,
+                        ContactsContract.CommonDataKinds.Phone.NUMBER + " ASC"
+                    )
+
+                    var number=""
+                    phone?.let { phone ->
+                        for (j in 0 until phone.count) {
+                            phone.moveToPosition(j)
+                            val contactIdPhone =
+                                phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NAME_RAW_CONTACT_ID))
+                            if (contactIdPhone == contactId) {
+                                 number =
+                                     phone.getString(phone.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER))
+                            }
+                        }
+                    }
+
+                    addView(name, number)
+                    phone?.close()
                 }
             }
             cursor?.close()
         }
     }
 
-    private fun addView(name:String) {
+    private fun addView(name: String, number: String) {
         binding.containerForContacts.addView(TextView(requireContext()).apply {
-            text = name
+            text = name + ": " + number
             textSize = 30f
+
         })
     }
 }
