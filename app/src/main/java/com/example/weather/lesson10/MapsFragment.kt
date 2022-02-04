@@ -63,5 +63,20 @@ class MapsFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?
         mapFragment?.getMapAsync(callback)
+        binding.buttonSearch.setOnClickListener {
+            searchPlace()
+        }
+    }
+
+    private fun searchPlace(){
+        Thread {
+            val geocoder = Geocoder(requireContext())
+            val listAddress = geocoder.getFromLocationName(binding.searchAddress.text.toString(),1)
+            requireActivity().runOnUiThread {
+                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(listAddress[0].latitude,listAddress[0].longitude),15f))
+                map.addMarker(MarkerOptions().position(LatLng(listAddress[0].latitude,listAddress[0].longitude)).title("")) //.icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin)))
+
+            }
+        }.start()
     }
 }
