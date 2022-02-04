@@ -10,11 +10,9 @@ import android.location.LocationListener
 import android.location.LocationManager
 import android.os.Bundle
 import android.preference.PreferenceManager.getDefaultSharedPreferences
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.constraintlayout.motion.widget.Debug.getLocation
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -137,6 +135,7 @@ class ListFragment : Fragment(), OnItemClick {
     override fun onItemClick(weather: WeatherData) {
         showWeather(weather)
     }
+
     private fun showWeather(weather: WeatherData) {
         activity?.run {
             supportFragmentManager.beginTransaction()
@@ -214,6 +213,7 @@ class ListFragment : Fragment(), OnItemClick {
                     showDialog()
                 }
                 else -> {
+                    showDialog()
                 }
             }
         }
@@ -221,64 +221,75 @@ class ListFragment : Fragment(), OnItemClick {
 
     private val locationListener = object : LocationListener {
         override fun onLocationChanged(location: Location) {
-           getAddress(location)
+            getAddress(location)
         }
 
         override fun onProviderDisabled(provider: String) {
             super.onProviderDisabled(provider)
         }
+
         override fun onProviderEnabled(provider: String) {
             super.onProviderEnabled(provider)
         }
+
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
 
         }
     }
 
-    private fun getLocation(){
+    private fun getLocation() {
         activity?.let {
-            if(ContextCompat.checkSelfPermission(
+            if (ContextCompat.checkSelfPermission(
                     it,
                     Manifest.permission.ACCESS_FINE_LOCATION
-                )==PackageManager.PERMISSION_GRANTED){
-                val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
-                if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                ) == PackageManager.PERMISSION_GRANTED
+            ) {
+                val locationManager =
+                    it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                if (locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
                     val providerGPS = locationManager.getProvider(LocationManager.GPS_PROVIDER)
                     providerGPS?.let {
-                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                        locationManager.requestLocationUpdates(
+                            LocationManager.GPS_PROVIDER,
                             REFRESH_PERIOD,
                             MIN_MOVING,
                             locationListener
                         )
                     }
-                }else{
-                    val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                    lastLocation?.let{
+                } else {
+                    val lastLocation =
+                        locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    lastLocation?.let {
                         getAddress(it)
+                        Snackbar.make(
+                            binding.root,
+                            getString(R.string.dialog_title_gps_turned_off),
+                            Snackbar.LENGTH_SHORT
+                        ).show()
                     }
                 }
-            }else{
-                Snackbar.make(binding.root, getString(R.string.dialog_title_gps_turned_off), Snackbar.LENGTH_SHORT).show()
+            } else {
+
             }
         }
     }
 
-    private fun getAddress(location: Location){
-        Thread{
+    private fun getAddress(location: Location) {
+        Thread {
             val geocoder = Geocoder(requireContext())
-            val listAddress=geocoder.getFromLocation(location.latitude,location.longitude,1)
+            val listAddress = geocoder.getFromLocation(location.latitude, location.longitude, 1)
             requireActivity().runOnUiThread {
-                showAddressDialog(listAddress[0].getAddressLine(0),location)
+                showAddressDialog(listAddress[0].getAddressLine(0), location)
             }
         }.start()
     }
 
-    private fun showAddressDialog(address:String,location: Location){
+    private fun showAddressDialog(address: String, location: Location) {
         AlertDialog.Builder(requireContext())
             .setTitle(getString(R.string.dialog_address_title))
             .setMessage(address)
             .setPositiveButton(getString(R.string.dialog_address_get_weather)) { _, _ ->
-                showWeather(WeatherData(City(address,location.latitude,location.longitude)))
+                showWeather(WeatherData(City(address, location.latitude, location.longitude)))
             }
             .setNegativeButton(getString(R.string.dialog_rationale_decline)) { dialog, _ -> dialog.dismiss() }
             .create()

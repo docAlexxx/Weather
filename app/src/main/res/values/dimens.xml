@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="top_margin">20dp</dimen>
+    <dimen name="top_margin">10dp</dimen>
     <dimen name="city_name_text_size">35sp</dimen>
     <dimen name="margin_coordinates">5dp</dimen>
     <dimen name="margin_temperature">15dp</dimen>

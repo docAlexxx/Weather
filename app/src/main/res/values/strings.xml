@@ -39,6 +39,8 @@
     <string name="dialog_rationale_decline">No need</string>
     <string name="dialog_address_title">Your address</string>
     <string name="dialog_address_get_weather">Get weather</string>
+    <string name="dialog_address_get_weather_for_place">Do you want to get weather for this place?</string>
+    <string name="dialog_address_get_it">Get it</string>
 
 
 </resources>

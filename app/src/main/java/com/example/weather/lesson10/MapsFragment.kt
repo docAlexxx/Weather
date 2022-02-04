@@ -1,15 +1,22 @@
 package com.example.weather.lesson10
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.pm.PackageManager
 import android.location.Geocoder
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
+import androidx.fragment.app.Fragment
 import com.example.weather.R
+import com.example.weather.Utils.BUNDLE_KEY
+import com.example.weather.Utils.REQUEST_CODE_LOCATION
 import com.example.weather.databinding.FragmentGoogleMapsMainBinding
-
+import com.example.weather.model.City
+import com.example.weather.model.WeatherData
+import com.example.weather.view.city.CityFragment
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -38,7 +45,77 @@ class MapsFragment : Fragment() {
             getAddress(it)
         }
 
+        googleMap.setOnMapLongClickListener {
+            getAddress(it)
+            showAddressDialog(it)
+        }
 
+        if (ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED || ContextCompat.checkSelfPermission(
+                requireContext(),
+                Manifest.permission.ACCESS_COARSE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            googleMap.isMyLocationEnabled = true
+
+        } else {
+            showDialog()
+        }
+
+    }
+
+    private fun showAddressDialog(location: LatLng) {
+
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.dialog_address_get_weather))
+            .setMessage(getString(R.string.dialog_address_get_weather_for_place))
+            .setPositiveButton(getString(R.string.dialog_address_get_it)) { _, _ ->
+                showWeather(
+                    WeatherData(
+                        City(
+                            (binding.textAddress.text).toString(),
+                            location.latitude,
+                            location.longitude
+                        )
+                    )
+                )
+            }
+            .setNegativeButton(getString(R.string.dialog_rationale_decline)) { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
+    }
+
+    private fun showWeather(weather: WeatherData) {
+        activity?.run {
+            supportFragmentManager.beginTransaction()
+                .add(R.id.fragment_container, CityFragment.newInstance(
+                    Bundle().apply {
+                        putParcelable(BUNDLE_KEY, weather)
+                    }
+                ))
+                .addToBackStack("").commit()
+        }
+
+    }
+
+
+    private fun showDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.dialog_rationale_title))
+            .setMessage(getString(R.string.dialog_message_no_gps))
+            .setPositiveButton(getString(R.string.dialog_rationale_give_access)) { _, _ ->
+                myRequestPermission()
+            }
+            .setNegativeButton(getString(R.string.dialog_rationale_decline)) { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
+
+    }
+
+    private fun myRequestPermission() {
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_LOCATION)
     }
 
     private fun getAddress(location: LatLng) {
@@ -70,13 +147,27 @@ class MapsFragment : Fragment() {
         }
     }
 
-    private fun searchPlace(){
+    private fun searchPlace() {
         Thread {
             val geocoder = Geocoder(requireContext())
-            val listAddress = geocoder.getFromLocationName(binding.searchAddress.text.toString(),1)
+            val listAddress = geocoder.getFromLocationName(binding.searchAddress.text.toString(), 1)
             requireActivity().runOnUiThread {
-                map.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(listAddress[0].latitude,listAddress[0].longitude),15f))
-                map.addMarker(MarkerOptions().position(LatLng(listAddress[0].latitude,listAddress[0].longitude)).title("")) //.icon(com.google.android.gms.maps.model.BitmapDescriptorFactory.fromResource(R.drawable.ic_map_pin)))
+                map.moveCamera(
+                    CameraUpdateFactory.newLatLngZoom(
+                        LatLng(
+                            listAddress[0].latitude,
+                            listAddress[0].longitude
+                        ), 15f
+                    )
+                )
+                map.addMarker(
+                    MarkerOptions().position(
+                        LatLng(
+                            listAddress[0].latitude,
+                            listAddress[0].longitude
+                        )
+                    ).title("")
+                )
 
             }
         }.start()
