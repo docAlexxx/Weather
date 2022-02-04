@@ -25,6 +25,18 @@
         app:maxImageSize="@dimen/max_size_FAB"
         app:tint="@null" />
 
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/LocationFAB"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="15dp"
+        android:src="@drawable/icon_maps1"
+        app:layout_constraintBottom_toTopOf="@id/listFragmentFAB"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:maxImageSize="56dp"
+        app:backgroundTint="@android:color/transparent"
+        app:tint="@null" />
+
     <FrameLayout
         android:id="@+id/listFragmentLoadingLayout"
         android:layout_width="match_parent"

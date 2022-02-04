@@ -56,6 +56,8 @@ class ListFragment : Fragment(), OnItemClick {
             listFragmentFAB.setOnClickListener {
                 changeRegion()
             }
+            LocationFAB.setOnClickListener {
+            }
         }
     }
 
