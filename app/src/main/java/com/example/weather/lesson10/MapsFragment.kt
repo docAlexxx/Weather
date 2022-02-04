@@ -1,5 +1,6 @@
 package com.example.weather.lesson10
 
+import android.location.Geocoder
 import androidx.fragment.app.Fragment
 
 import android.os.Bundle
@@ -7,6 +8,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.weather.R
+import com.example.weather.databinding.FragmentGoogleMapsMainBinding
 
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -17,27 +19,44 @@ import com.google.android.gms.maps.model.MarkerOptions
 
 class MapsFragment : Fragment() {
 
+    private var _binding: FragmentGoogleMapsMainBinding? = null
+    private val binding: FragmentGoogleMapsMainBinding
+        get() {
+            return _binding!!
+        }
+
+    private lateinit var map: GoogleMap
+
     private val callback = OnMapReadyCallback { googleMap ->
-        /**
-         * Manipulates the map once available.
-         * This callback is triggered when the map is ready to be used.
-         * This is where we can add markers or lines, add listeners or move the camera.
-         * In this case, we just add a marker near Sydney, Australia.
-         * If Google Play services is not installed on the device, the user will be prompted to
-         * install it inside the SupportMapFragment. This method will only be triggered once the
-         * user has installed Google Play services and returned to the app.
-         */
-        val sydney = LatLng(-34.0, 151.0)
-        googleMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        map = googleMap
+        val startCity = LatLng(53.12, 50.06)
+        googleMap.addMarker(MarkerOptions().position(startCity).title("Marker in Samara"))
+        googleMap.moveCamera(CameraUpdateFactory.newLatLng(startCity))
+        googleMap.uiSettings.isZoomControlsEnabled = true
+
+        googleMap.setOnMapClickListener {
+            getAddress(it)
+        }
+    }
+
+    private fun getAddress(location: LatLng) {
+
+        Thread {
+            val geocoder = Geocoder(requireContext())
+            val listAddress = geocoder.getFromLocation(location.latitude, location.longitude, 1)
+            requireActivity().runOnUiThread {
+                binding.textAddress.text = listAddress[0].getAddressLine(0)
+            }
+        }.start()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        return inflater.inflate(R.layout.fragment_maps, container, false)
+    ): View {
+        _binding = FragmentGoogleMapsMainBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
