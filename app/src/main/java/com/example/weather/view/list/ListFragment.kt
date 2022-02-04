@@ -4,6 +4,7 @@ import android.Manifest
 import android.app.AlertDialog
 import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.location.Location
 import android.location.LocationListener
 import android.location.LocationManager
@@ -259,7 +260,25 @@ class ListFragment : Fragment(), OnItemClick {
     }
 
     private fun getAddress(location: Location){
-        Log.d(""," $location")
+        Thread{
+            val geocoder = Geocoder(requireContext())
+            val listAddress=geocoder.getFromLocation(location.latitude,location.longitude,1)
+            requireActivity().runOnUiThread {
+                showAddressDialog(listAddress[0].getAddressLine(0),location)
+            }
+        }.start()
+    }
+
+    private fun showAddressDialog(address:String,location: Location){
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.dialog_address_title))
+            .setMessage(address)
+            .setPositiveButton(getString(R.string.dialog_address_get_weather)) { _, _ ->
+                myRequestPermission()
+            }
+            .setNegativeButton(getString(R.string.dialog_rationale_decline)) { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
     }
 
 }
