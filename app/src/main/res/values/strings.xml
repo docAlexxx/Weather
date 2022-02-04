@@ -27,5 +27,18 @@
     <string name="head_picture4">https://cdn.pixabay.com/photo/2016/09/10/23/08/lisbon-1660337_960_720.jpg</string>
     <string name="head_picture5">https://cdn.pixabay.com/photo/2016/08/23/17/49/weather-1615103_960_720.jpg</string>
 
+    <string name="dialog_button_close">Close</string>
+    <string name="dialog_title_no_gps">Permission for geolocation is closed</string>
+    <string name="dialog_message_no_gps">Give permission for geolocation to find out the weather of the current location</string>
+    <string name="dialog_title_gps_turned_off">GPS is off</string>
+    <string name="dialog_message_last_location_unknown">The location is unknown. Turn on GPS!</string>
+    <string name="dialog_message_last_known_location">The last known location is shown. Turn on GPS if you want to update your location</string>
+    <string name="dialog_rationale_title">Access to geolocation</string>
+    <string name="dialog_rationale_message">Explanation</string>
+    <string name="dialog_rationale_give_access">Give access</string>
+    <string name="dialog_rationale_decline">No need</string>
+    <string name="dialog_address_title">Your address</string>
+    <string name="dialog_address_get_weather">Get weather</string>
+
 
 </resources>

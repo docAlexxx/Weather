@@ -1,16 +1,22 @@
 package com.example.weather.view.list
 
+import android.Manifest
+import android.app.AlertDialog
+import android.content.pm.PackageManager
 import android.os.Bundle
 import android.preference.PreferenceManager.getDefaultSharedPreferences
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.constraintlayout.motion.widget.Debug.getLocation
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.Utils.BUNDLE_KEY
 import com.example.weather.Utils.KEY_SP
+import com.example.weather.Utils.REQUEST_CODE_LOCATION
 import com.example.weather.databinding.FragmentListBinding
 import com.example.weather.model.WeatherData
 import com.example.weather.view.city.CityFragment
@@ -57,6 +63,7 @@ class ListFragment : Fragment(), OnItemClick {
                 changeRegion()
             }
             LocationFAB.setOnClickListener {
+                checkPermission()
             }
         }
     }
@@ -148,4 +155,59 @@ class ListFragment : Fragment(), OnItemClick {
         return binding.root
     }
 
+    private fun checkPermission() {
+        context?.let {
+            when {
+                ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                ) == PackageManager.PERMISSION_GRANTED -> {
+                    getLocation()
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                    showDialog()
+                }
+                else -> {
+                    myRequestPermission()
+                }
+            }
+        }
+    }
+
+    private fun showDialog() {
+        AlertDialog.Builder(requireContext())
+            .setTitle(getString(R.string.dialog_rationale_title))
+            .setMessage(getString(R.string.dialog_message_no_gps))
+            .setPositiveButton(getString(R.string.dialog_rationale_give_access)) { _, _ ->
+                myRequestPermission()
+            }
+            .setNegativeButton(getString(R.string.dialog_rationale_decline)) { dialog, _ -> dialog.dismiss() }
+            .create()
+            .show()
+
+    }
+
+    private fun myRequestPermission() {
+        requestPermissions(arrayOf(Manifest.permission.ACCESS_FINE_LOCATION), REQUEST_CODE_LOCATION)
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        if (requestCode == REQUEST_CODE_LOCATION) {
+
+            when {
+                (grantResults[0] == PackageManager.PERMISSION_GRANTED) -> {
+                    getLocation()
+                }
+                shouldShowRequestPermissionRationale(Manifest.permission.ACCESS_FINE_LOCATION) -> {
+                    showDialog()
+                }
+                else -> {
+                }
+            }
+        }
+    }
 }
