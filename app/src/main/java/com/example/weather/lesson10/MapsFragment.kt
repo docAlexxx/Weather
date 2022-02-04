@@ -37,6 +37,8 @@ class MapsFragment : Fragment() {
         googleMap.setOnMapClickListener {
             getAddress(it)
         }
+
+
     }
 
     private fun getAddress(location: LatLng) {
