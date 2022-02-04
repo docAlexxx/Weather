@@ -22,6 +22,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.Utils.*
 import com.example.weather.databinding.FragmentListBinding
+import com.example.weather.model.City
 import com.example.weather.model.WeatherData
 import com.example.weather.view.city.CityFragment
 import com.example.weather.viewmodel.AppStatement
@@ -134,6 +135,9 @@ class ListFragment : Fragment(), OnItemClick {
     }
 
     override fun onItemClick(weather: WeatherData) {
+        showWeather(weather)
+    }
+    private fun showWeather(weather: WeatherData) {
         activity?.run {
             supportFragmentManager.beginTransaction()
                 .add(R.id.fragment_container, CityFragment.newInstance(
@@ -274,7 +278,7 @@ class ListFragment : Fragment(), OnItemClick {
             .setTitle(getString(R.string.dialog_address_title))
             .setMessage(address)
             .setPositiveButton(getString(R.string.dialog_address_get_weather)) { _, _ ->
-                myRequestPermission()
+                showWeather(WeatherData(City(address,location.latitude,location.longitude)))
             }
             .setNegativeButton(getString(R.string.dialog_rationale_decline)) { dialog, _ -> dialog.dismiss() }
             .create()
