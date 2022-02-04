@@ -2,9 +2,14 @@ package com.example.weather.view.list
 
 import android.Manifest
 import android.app.AlertDialog
+import android.content.Context
 import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationListener
+import android.location.LocationManager
 import android.os.Bundle
 import android.preference.PreferenceManager.getDefaultSharedPreferences
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +19,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
-import com.example.weather.Utils.BUNDLE_KEY
-import com.example.weather.Utils.KEY_SP
-import com.example.weather.Utils.REQUEST_CODE_LOCATION
+import com.example.weather.Utils.*
 import com.example.weather.databinding.FragmentListBinding
 import com.example.weather.model.WeatherData
 import com.example.weather.view.city.CityFragment
@@ -210,4 +213,53 @@ class ListFragment : Fragment(), OnItemClick {
             }
         }
     }
+
+    private val locationListener = object : LocationListener {
+        override fun onLocationChanged(location: Location) {
+           getAddress(location)
+        }
+
+        override fun onProviderDisabled(provider: String) {
+            super.onProviderDisabled(provider)
+        }
+        override fun onProviderEnabled(provider: String) {
+            super.onProviderEnabled(provider)
+        }
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
+
+        }
+    }
+
+    private fun getLocation(){
+        activity?.let {
+            if(ContextCompat.checkSelfPermission(
+                    it,
+                    Manifest.permission.ACCESS_FINE_LOCATION
+                )==PackageManager.PERMISSION_GRANTED){
+                val locationManager = it.getSystemService(Context.LOCATION_SERVICE) as LocationManager
+                if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)){
+                    val providerGPS = locationManager.getProvider(LocationManager.GPS_PROVIDER)
+                    providerGPS?.let {
+                        locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+                            REFRESH_PERIOD,
+                            MIN_MOVING,
+                            locationListener
+                        )
+                    }
+                }else{
+                    val lastLocation = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
+                    lastLocation?.let{
+                        getAddress(it)
+                    }
+                }
+            }else{
+                Snackbar.make(binding.root, getString(R.string.dialog_title_gps_turned_off), Snackbar.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+    private fun getAddress(location: Location){
+        Log.d(""," $location")
+    }
+
 }
