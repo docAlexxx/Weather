@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity() {
 
             R.id.menu_history -> {
                 val fragmentHistory = supportFragmentManager.findFragmentByTag("tagH")
-                if (fragmentHistory==null) {
+                if (fragmentHistory == null) {
                     supportFragmentManager.beginTransaction()
                         .add(R.id.fragment_container, HistoryFragment.newInstance(), "tagH")
                         .addToBackStack("")
@@ -48,7 +48,7 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_phonelist -> {
                 val fragmentList = supportFragmentManager.findFragmentByTag("tagL")
-                if (fragmentList==null) {
+                if (fragmentList == null) {
                     supportFragmentManager.beginTransaction()
                         .add(R.id.fragment_container, PhonelistFragment.newInstance(), "tagL")
                         .addToBackStack("").commit()
@@ -57,9 +57,10 @@ class MainActivity : AppCompatActivity() {
             }
             R.id.menu_google_maps -> {
                 val fragmentMap = supportFragmentManager.findFragmentByTag("tagM")
-                if (fragmentMap==null) {
+                if (fragmentMap == null) {
                     supportFragmentManager.beginTransaction()
-                        .add(R.id.fragment_container, MapsFragment(), "tagM").addToBackStack("").commit()
+                        .add(R.id.fragment_container, MapsFragment(), "tagM").addToBackStack("")
+                        .commit()
                 }
                 true
             }
