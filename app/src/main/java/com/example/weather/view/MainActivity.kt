@@ -1,6 +1,7 @@
 package com.example.weather.view
 
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
@@ -10,6 +11,8 @@ import com.example.weather.lesson10.MapsFragment
 import com.example.weather.lesson9.PhonelistFragment
 import com.example.weather.view.history.HistoryFragment
 import com.example.weather.view.list.ListFragment
+import com.google.android.gms.tasks.OnCompleteListener
+import com.google.firebase.messaging.FirebaseMessaging
 
 class MainActivity : AppCompatActivity() {
 
@@ -25,7 +28,22 @@ class MainActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction()
                 .replace(R.id.fragment_container, ListFragment.newInstance()).commit()
         }
-//        val listWeather = App.getHistoryWeatherDao().getAllHistoryWeather()
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+            if (!task.isSuccessful) {
+                Log.w("mylogs_push", "Fetching FCM registration token failed", task.exception)
+                return@OnCompleteListener
+            }
+
+            // Get new FCM registration token
+            val token = task.result
+            Log.d("mylogs_push", " token $token")
+            // Log and toast
+            /*  val msg = getString(R.string.msg_token_fmt, token)
+
+              Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()*/
+        })
+
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
