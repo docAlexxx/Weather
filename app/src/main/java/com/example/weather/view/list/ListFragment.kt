@@ -28,6 +28,7 @@ import com.example.weather.viewmodel.MainViewModel
 import com.google.android.material.snackbar.Snackbar
 import kotlin.properties.Delegates
 
+
 class ListFragment : Fragment(), OnItemClick {
 
     private var _binding: FragmentListBinding? = null
@@ -295,5 +296,6 @@ class ListFragment : Fragment(), OnItemClick {
             .create()
             .show()
     }
+
 
 }
