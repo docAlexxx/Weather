@@ -34,7 +34,7 @@ android {
 
         debug {
             minifyEnabled true
-            shrinkResources true 
+            shrinkResources true
         }
 
         release {
@@ -49,6 +49,19 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+    flavorDimensions 'versions'
+    productFlavors {
+        Free {
+            dimension 'versions'
+          // applicationId "com.example.weather_free"
+        }
+        Pro {
+            dimension 'versions'
+          //  applicationId "com.example.weather_pro"
+        }
+    }
+
+
 }
 
 dependencies {
