@@ -34,6 +34,12 @@ class MainActivity : AppCompatActivity() {
                 .replace(R.id.fragment_container, ListFragment.newInstance()).commit()
         }
 
+        getToken()
+
+        pushNotification()
+    }
+
+    fun getToken(){
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w("mylogs_push", "Fetching FCM registration token failed", task.exception)
@@ -48,10 +54,8 @@ class MainActivity : AppCompatActivity() {
 
               Toast.makeText(baseContext, msg, Toast.LENGTH_SHORT).show()*/
         })
-
-        pushNotification()
-
     }
+
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.main_screen_menu, menu)

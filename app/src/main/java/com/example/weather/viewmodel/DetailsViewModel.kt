@@ -44,15 +44,19 @@ class DetailsViewModel(
                     liveData.postValue(CityLoadStatement.Success(it))
                 }
             } else {
-                var errorText = response.message() + "(" + response.code() + ")"
-                when (response.code()) {
-                    in 300..399 -> errorText = "Redirection! " + errorText
-                    in 400..499 -> errorText = "Client Error! " + errorText
-                    in 500..599 -> errorText = "Server Error! " + errorText
-                    else -> errorText = "Informational! " + errorText
-                }
-                liveData.postValue(CityLoadStatement.Error(errorText))
+                var errorText = response.message() + "( ${response.code()} )"
+
+                liveData.postValue(CityLoadStatement.Error(identifyError(response.code(), errorText)))
             }
+        }
+    }
+
+    fun identifyError(errorCode: Int, errorText:String) :String{
+        return when (errorCode) {
+            in 300..399 -> "Redirection! "
+            in 400..499 -> "Client Error! "
+            in 500..599 -> "Server Error! "
+            else -> "Informational! "
         }
     }
 }
