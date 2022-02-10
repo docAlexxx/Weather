@@ -13,7 +13,9 @@ import coil.load
 import coil.request.ImageRequest
 import com.example.weather.R
 import com.example.weather.Utils.BUNDLE_KEY
+import com.example.weather.Utils.BindingFragment
 import com.example.weather.databinding.FragmentCityBinding
+import com.example.weather.databinding.FragmentHistoryBinding
 import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
 import com.example.weather.viewmodel.CityLoadStatement
@@ -22,20 +24,9 @@ import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_list.*
 
 
-class CityFragment : Fragment() {
-    private var _binding: FragmentCityBinding? = null
-
-    private val binding: FragmentCityBinding
-        get() {
-            return _binding!!
-        }
+class CityFragment : BindingFragment<FragmentCityBinding>(FragmentCityBinding::inflate) {
 
     private lateinit var localWeather: WeatherData
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
 
     private val viewModel: DetailsViewModel by lazy {
         ViewModelProvider(this).get(DetailsViewModel::class.java)
@@ -65,14 +56,6 @@ class CityFragment : Fragment() {
                 }
             }
         }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentCityBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     companion object {

@@ -19,6 +19,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
 import com.example.weather.Utils.*
+import com.example.weather.databinding.FragmentCityBinding
+import com.example.weather.databinding.FragmentHistoryBinding
 import com.example.weather.databinding.FragmentListBinding
 import com.example.weather.lesson11.FCMService
 import com.example.weather.model.City
@@ -30,13 +32,7 @@ import com.google.android.material.snackbar.Snackbar
 import kotlin.properties.Delegates
 
 
-class ListFragment : Fragment(), OnItemClick {
-
-    private var _binding: FragmentListBinding? = null
-    private val binding: FragmentListBinding
-        get() {
-            return _binding!!
-        }
+class ListFragment : BindingFragment<FragmentListBinding>(FragmentListBinding::inflate), OnItemClick {
 
     private val adapter = ListFragmentAdapter(this)
 
@@ -149,19 +145,6 @@ class ListFragment : Fragment(), OnItemClick {
                 .addToBackStack("").commit()
         }
 
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentListBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     private fun checkPermission() {

@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.example.weather.R
+import com.example.weather.Utils.BindingFragment
 import com.example.weather.databinding.FragmentHistoryBinding
 import com.example.weather.model.WeatherData
 import com.example.weather.view.list.OnItemClick
@@ -15,13 +16,7 @@ import com.example.weather.viewmodel.AppStatement
 import com.example.weather.viewmodel.HistoryViewModel
 import com.google.android.material.snackbar.Snackbar
 
-class HistoryFragment : Fragment(), OnItemClick {
-
-    private var _binding: FragmentHistoryBinding? = null
-    private val binding: FragmentHistoryBinding
-        get() {
-            return _binding!!
-        }
+class HistoryFragment : BindingFragment<FragmentHistoryBinding>(FragmentHistoryBinding::inflate), OnItemClick {
 
     private val adapter: HistoryFragmentAdapter by lazy {
         HistoryFragmentAdapter(this)
@@ -60,19 +55,6 @@ class HistoryFragment : Fragment(), OnItemClick {
 
     private fun View.showSnackBarWithoutAction(text: String, long: Int) {
         Snackbar.make(this, text, long).show()
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        _binding = null
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentHistoryBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     companion object {
