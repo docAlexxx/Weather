@@ -12,6 +12,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import com.example.weather.R
 import com.example.weather.Utils.BUNDLE_KEY
+import com.example.weather.Utils.BindingFragment
 import com.example.weather.Utils.REQUEST_CODE_LOCATION
 import com.example.weather.databinding.FragmentGoogleMapsMainBinding
 import com.example.weather.model.City
@@ -25,13 +26,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 
-class MapsFragment : Fragment() {
-
-    private var _binding: FragmentGoogleMapsMainBinding? = null
-    private val binding: FragmentGoogleMapsMainBinding
-        get() {
-            return _binding!!
-        }
+class MapsFragment : BindingFragment<FragmentGoogleMapsMainBinding>(FragmentGoogleMapsMainBinding::inflate) {
 
     private lateinit var map: GoogleMap
 
@@ -128,15 +123,6 @@ class MapsFragment : Fragment() {
                 binding.textAddress.text = listAddress[0].getAddressLine(0)
             }
         }.start()
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentGoogleMapsMainBinding.inflate(inflater, container, false)
-        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
