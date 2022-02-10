@@ -23,6 +23,7 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 
 class MapsFragment : Fragment() {
 
@@ -151,24 +152,29 @@ class MapsFragment : Fragment() {
         Thread {
             val geocoder = Geocoder(requireContext())
             val listAddress = geocoder.getFromLocationName(binding.searchAddress.text.toString(), 1)
-            requireActivity().runOnUiThread {
-                map.moveCamera(
-                    CameraUpdateFactory.newLatLngZoom(
-                        LatLng(
-                            listAddress[0].latitude,
-                            listAddress[0].longitude
-                        ), 15f
-                    )
-                )
-                map.addMarker(
-                    MarkerOptions().position(
-                        LatLng(
-                            listAddress[0].latitude,
-                            listAddress[0].longitude
+            if ( listAddress.size>0) {
+                requireActivity().runOnUiThread {
+                    map.moveCamera(
+                        CameraUpdateFactory.newLatLngZoom(
+                            LatLng(
+                                listAddress[0].latitude,
+                                listAddress[0].longitude
+                            ), 15f
                         )
-                    ).title("")
-                )
+                    )
+                    map.addMarker(
+                        MarkerOptions().position(
+                            LatLng(
+                                listAddress[0].latitude,
+                                listAddress[0].longitude
+                            )
+                        ).title("")
+                    )
 
+                }
+
+            } else {
+                Snackbar.make(binding.mainMapView, "Can't find the place", Snackbar.LENGTH_SHORT).show()
             }
         }.start()
     }

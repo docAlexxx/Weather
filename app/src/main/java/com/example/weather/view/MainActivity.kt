@@ -98,9 +98,7 @@ class MainActivity : AppCompatActivity() {
 
     companion object {
         private const val NOTIFICATION_ID_1 = 1
-        private const val NOTIFICATION_ID_2 = 2
         private const val CHANNEL_ID_1 = "channel_id_1"
-        private const val CHANNEL_ID_2 = "channel_id_2"
     }
 
     private fun pushNotification() {
@@ -109,29 +107,10 @@ class MainActivity : AppCompatActivity() {
 
         val notificationBuilder_1 = NotificationCompat.Builder(this, CHANNEL_ID_1).apply {
             setSmallIcon(R.drawable.weather_icon)
-            setContentTitle("Заголовок для $CHANNEL_ID_1")
-            setContentText("Сообщение для $CHANNEL_ID_1")
+            setContentTitle("Name $CHANNEL_ID_1")
+            setContentText("Description for $CHANNEL_ID_1")
             priority = NotificationCompat.PRIORITY_MAX
         }
-        val notificationBuilder_2 = NotificationCompat.Builder(this, CHANNEL_ID_2).apply {
-            setSmallIcon(R.drawable.weather_icon)
-            setContentTitle("Заголовок для $CHANNEL_ID_2")
-            setContentText("Сообщение для $CHANNEL_ID_2")
-            priority = NotificationCompat.PRIORITY_HIGH
-        }
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val channelName_2 = "Name $CHANNEL_ID_2"
-            val channelDescription_2 = "Description for $CHANNEL_ID_2"
-            val channelPriority_2 = NotificationManager.IMPORTANCE_LOW
-
-            val channel_2 =
-                NotificationChannel(CHANNEL_ID_2, channelName_2, channelPriority_2).apply {
-                    description = channelDescription_2
-                }
-            notificationManager.createNotificationChannel(channel_2)
-        }
-        notificationManager.notify(NOTIFICATION_ID_2, notificationBuilder_2.build())
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val channelName_1 = "Name $CHANNEL_ID_1"
@@ -145,7 +124,6 @@ class MainActivity : AppCompatActivity() {
             notificationManager.createNotificationChannel(channel_1)
         }
         notificationManager.notify(NOTIFICATION_ID_1, notificationBuilder_1.build())
-
     }
 
 }
