@@ -9,15 +9,15 @@ apply plugin: 'kotlin-kapt'
 android {
     compileSdk 31
 
-    buildFeatures{
+    buildFeatures {
         viewBinding true
     }
 
-    buildTypes.each{
+    buildTypes.each {
         Properties properties = new Properties()
         properties.load(project.rootProject.file("apikey.properties").newDataInputStream())
-        def apiKey = properties.getProperty("yandex_weather_api_key","")
-        it.buildConfigField "String","WEATHER_API_KEY",apiKey
+        def apiKey = properties.getProperty("yandex_weather_api_key", "")
+        it.buildConfigField "String", "WEATHER_API_KEY", apiKey
     }
 
     defaultConfig {
@@ -38,7 +38,7 @@ android {
             storeFile file("C:\\Users\\Sasha\\AndroidStudioProjects\\Weather\\weather.jks")
             storePassword = password
             keyAlias 'weather'
-            keyPassword =password
+            keyPassword = password
         }
     }
 
@@ -66,11 +66,11 @@ android {
     productFlavors {
         Free {
             dimension 'versions'
-          // applicationId "com.example.weather_free"
+            // applicationId "com.example.weather_free"
         }
         Pro {
             dimension 'versions'
-          //  applicationId "com.example.weather_pro"
+            //  applicationId "com.example.weather_pro"
         }
     }
 

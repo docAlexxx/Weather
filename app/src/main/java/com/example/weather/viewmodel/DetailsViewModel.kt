@@ -25,7 +25,7 @@ class DetailsViewModel(
         Thread {
             repoHistoryWeatherImpl.saveWeather(weather)
         }.start()
-        }
+    }
 
     fun getWeatherFromRemoteServer(lat: Double, lon: Double) {
         liveData.postValue(CityLoadStatement.Loading(0))
@@ -46,12 +46,19 @@ class DetailsViewModel(
             } else {
                 var errorText = response.message() + "( ${response.code()} )"
 
-                liveData.postValue(CityLoadStatement.Error(identifyError(response.code(), errorText)))
+                liveData.postValue(
+                    CityLoadStatement.Error(
+                        identifyError(
+                            response.code(),
+                            errorText
+                        )
+                    )
+                )
             }
         }
     }
 
-    fun identifyError(errorCode: Int, errorText:String) :String{
+    fun identifyError(errorCode: Int, errorText: String): String {
         return when (errorCode) {
             in 300..399 -> "Redirection! "
             in 400..499 -> "Client Error! "

@@ -6,21 +6,18 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Bundle
 import android.provider.ContactsContract
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.example.weather.Utils.BindingFragment
 import com.example.weather.Utils.REQUEST_CODE
-import com.example.weather.databinding.FragmentCityBinding
 import com.example.weather.databinding.FragmentPhonelistBinding
 
 
-class PhonelistFragment : BindingFragment<FragmentPhonelistBinding>(FragmentPhonelistBinding::inflate) {
+class PhonelistFragment :
+    BindingFragment<FragmentPhonelistBinding>(FragmentPhonelistBinding::inflate) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,16 +43,17 @@ class PhonelistFragment : BindingFragment<FragmentPhonelistBinding>(FragmentPhon
         }
     }
 
-    private val launcher = registerForActivityResult(ActivityResultContracts.RequestPermission()){ it->
-        if(it){
-            getContacts()
-        }else{
+    private val launcher =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { it ->
+            if (it) {
+                getContacts()
+            } else {
 
+            }
         }
-    }
 
     private fun myRequestPermission() {
-      //  requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE)
+        //  requestPermissions(arrayOf(Manifest.permission.READ_CONTACTS), REQUEST_CODE)
         launcher.launch(Manifest.permission.READ_CONTACTS)
     }
 

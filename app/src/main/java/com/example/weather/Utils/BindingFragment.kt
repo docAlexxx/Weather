@@ -22,7 +22,7 @@ abstract class BindingFragment<T : ViewBinding>(
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
-        _binding = inflateBinding.invoke(inflater,container,false)
+        _binding = inflateBinding.invoke(inflater, container, false)
         return binding.root
     }
 

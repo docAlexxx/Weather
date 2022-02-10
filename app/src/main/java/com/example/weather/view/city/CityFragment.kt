@@ -1,11 +1,8 @@
 package com.example.weather.view.city
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import coil.ImageLoader
 import coil.decode.SvgDecoder
@@ -15,7 +12,6 @@ import com.example.weather.R
 import com.example.weather.Utils.BUNDLE_KEY
 import com.example.weather.Utils.BindingFragment
 import com.example.weather.databinding.FragmentCityBinding
-import com.example.weather.databinding.FragmentHistoryBinding
 import com.example.weather.model.WeatherDTO
 import com.example.weather.model.WeatherData
 import com.example.weather.viewmodel.CityLoadStatement

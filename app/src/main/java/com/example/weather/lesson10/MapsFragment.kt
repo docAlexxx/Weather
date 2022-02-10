@@ -5,11 +5,8 @@ import android.app.AlertDialog
 import android.content.pm.PackageManager
 import android.location.Geocoder
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
 import com.example.weather.R
 import com.example.weather.Utils.BUNDLE_KEY
 import com.example.weather.Utils.BindingFragment
@@ -26,7 +23,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 
-class MapsFragment : BindingFragment<FragmentGoogleMapsMainBinding>(FragmentGoogleMapsMainBinding::inflate) {
+class MapsFragment :
+    BindingFragment<FragmentGoogleMapsMainBinding>(FragmentGoogleMapsMainBinding::inflate) {
 
     private lateinit var map: GoogleMap
 
@@ -138,7 +136,7 @@ class MapsFragment : BindingFragment<FragmentGoogleMapsMainBinding>(FragmentGoog
         Thread {
             val geocoder = Geocoder(requireContext())
             val listAddress = geocoder.getFromLocationName(binding.searchAddress.text.toString(), 1)
-            if ( listAddress.size>0) {
+            if (listAddress.size > 0) {
                 requireActivity().runOnUiThread {
                     map.moveCamera(
                         CameraUpdateFactory.newLatLngZoom(
@@ -160,7 +158,8 @@ class MapsFragment : BindingFragment<FragmentGoogleMapsMainBinding>(FragmentGoog
                 }
 
             } else {
-                Snackbar.make(binding.mainMapView, "Can't find the place", Snackbar.LENGTH_SHORT).show()
+                Snackbar.make(binding.mainMapView, "Can't find the place", Snackbar.LENGTH_SHORT)
+                    .show()
             }
         }.start()
     }
